@@ -1,0 +1,4 @@
+[run]
+omit = src/tests/*
+[coverage:report]
+skip_empty = true

@@ -1,0 +1,35 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+gunicorn = "==20.0.4"
+pytest = "==5.4.2"
+pytest-cov = "==2.8.1"
+flake8 = "==3.7.9"
+psycopg2 = "==2.8.5"
+flask-static-digest = "==0.1.3"
+flask-migrate = "==2.5.3"
+Flask = "==1.1.1"
+Werkzeug = "==0.16.0"
+Flask-SQLAlchemy = "~=2.4.1"
+SQLAlchemy-Utils = "~=0.36.5"
+Flask-DebugToolbar = "==0.10.1"
+Flask-Mail = "==0.9.1"
+Faker = "==4.1.0"
+pytz = "*"
+python-dotenv = "*"
+pymysql = "*"
+flask-classful = "*"
+flask-marshmallow = "*"
+marshmallow-sqlalchemy = "*"
+flask-jwt-extended = "*"
+flask-cors = "*"
+pandas = "*"
+cryptography = "*"
+
+[requires]
+python_version = "3"
