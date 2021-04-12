@@ -9,7 +9,7 @@ class DefaultView(BaseView):
 
     def index(self):
         return {
-            'title': 'Endo monitoring api',
+            'title': 'Flask api',
             'version': current_app.config['FLASK_APP_VERSION']
         }
 
