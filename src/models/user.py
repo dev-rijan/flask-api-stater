@@ -4,6 +4,7 @@ from hashlib import md5
 from flask import current_app
 from sqlalchemy import or_
 from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy.sql import expression
 
 from itsdangerous import URLSafeTimedSerializer, \
     TimedJSONWebSignatureSerializer
@@ -15,13 +16,11 @@ from src.models.profile import Profile
 
 class User(ResourceMixin, db.Model):
     ROLE_ADMIN = 'ROLE_ADMIN'
-    ROLE_CLIENT = 'ROLE_CLIENT'
-    ROLE_IOT = 'ROLE_IOT'
+    ROLE_USER = 'ROLE_USER'
 
     ROLES = OrderedDict([
         (ROLE_ADMIN, 'ROLE_ADMIN'),
-        (ROLE_CLIENT, 'ROLE_CLIENT'),
-        (ROLE_IOT, 'ROLE_IOT')
+        (ROLE_USER, 'ROLE_USER')
     ])
 
     __tablename__ = 'users'
@@ -30,13 +29,12 @@ class User(ResourceMixin, db.Model):
 
     # Authentication.
     role = db.Column(db.Enum(*ROLES, name='role_types', native_enum=False),
-                     index=True, nullable=False, server_default=ROLE_ADMIN)
+                     nullable=False, default=ROLE_ADMIN)
     is_active = db.Column('is_active', db.Boolean(), nullable=False,
-                          server_default='1')
-    username = db.Column(db.String(24), unique=True, index=True)
-    email = db.Column(db.String(255), unique=True, index=True, nullable=False,
-                      server_default='')
-    password = db.Column(db.String(128), nullable=False, server_default='')
+                          server_default=expression.true())
+    username = db.Column(db.String(24), unique=True)
+    email = db.Column(db.String(255), unique=True, nullable=False)
+    password = db.Column(db.String(128), nullable=False)
 
     profile = db.relationship(
         Profile,

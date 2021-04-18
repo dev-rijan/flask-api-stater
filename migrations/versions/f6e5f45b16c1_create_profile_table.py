@@ -24,7 +24,6 @@ def upgrade():
                         sa.ForeignKey('users.id',
                                       onupdate='CASCADE',
                                       ondelete='CASCADE'),
-                        index=True,
                         primary_key=True
                     ),
                     sa.Column('name', sa.String(120), nullable=False),
