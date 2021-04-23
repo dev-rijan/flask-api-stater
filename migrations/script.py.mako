@@ -1,8 +1,6 @@
 from alembic import op
 import sqlalchemy as sa
 
-from lib.util_datetime import tzware_datetime
-from lib.util_sqlalchemy import AwareDateTime
 ${imports if imports else ""}
 
 """${message}
