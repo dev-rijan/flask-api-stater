@@ -83,14 +83,14 @@ def users():
             start_date='-1y', end_date='now').strftime('%s')
 
         created_at = datetime.utcfromtimestamp(
-            float(fake_datetime)).strftime('%Y-%m-%dT%H:%M:%S Z')
+            float(fake_datetime)).strftime('%Y-%m-%d %H:%M:%S')
 
         random_percent = random.random()
 
         if random_percent >= 0.05:
-            role = 'user'
+            role = 'ROLE_USER'
         else:
-            role = 'admin'
+            role = 'ROLE_ADMIN'
 
         email = random_emails.pop()
 
@@ -111,9 +111,10 @@ def users():
 
         # Ensure the seeded admin is always an admin with the seeded password.
         if email == current_app.config['SEED_ADMIN_EMAIL']:
-            password = User.encrypt_password(current_app.config['SEED_ADMIN_PASSWORD'])
+            password = User.encrypt_password(
+                current_app.config['SEED_ADMIN_PASSWORD'])
 
-            params['role'] = 'admin'
+            params['role'] = 'ROLE_ADMIN'
             params['password'] = password
 
         data.append(params)
