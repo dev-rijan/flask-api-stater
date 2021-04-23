@@ -3,7 +3,7 @@ import datetime
 from sqlalchemy import DateTime, text
 from sqlalchemy.types import TypeDecorator
 
-from lib.util_datetime import tzware_datetime
+from src.utils.util_datetime import tzware_datetime
 from src.extensions import db
 
 
