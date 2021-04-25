@@ -9,7 +9,7 @@ from sqlalchemy.sql import expression
 from itsdangerous import URLSafeTimedSerializer, \
     TimedJSONWebSignatureSerializer
 
-from lib.util_sqlalchemy import ResourceMixin
+from src.mixins.resource import ResourceMixin
 from src.extensions import db
 from src.models.profile import Profile
 

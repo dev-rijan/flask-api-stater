@@ -1,9 +1,13 @@
 
+from src.extensions import db
+from src.utils.util_datetime import tzware_datetime
+
+
 class ResourceMixin(object):
     # Keep track when records are created and updated.
-    created_at = db.Column(AwareDateTime(),
+    created_at = db.Column(db.TIMESTAMP,
                            default=tzware_datetime)
-    updated_at = db.Column(AwareDateTime(),
+    updated_at = db.Column(db.TIMESTAMP,
                            default=tzware_datetime,
                            onupdate=tzware_datetime)
 

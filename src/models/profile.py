@@ -1,4 +1,4 @@
-from lib.util_sqlalchemy import ResourceMixin
+from src.mixins.resource import ResourceMixin
 from src.extensions import db
 
 

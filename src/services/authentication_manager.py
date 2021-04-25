@@ -4,7 +4,7 @@ from flask import current_app
 from flask_jwt_extended import create_access_token, create_refresh_token
 from itsdangerous import TimedJSONWebSignatureSerializer
 
-from lib.flask_mailplus import send_template_message
+from src.utils.flask_mailplus import send_template_message
 from src.models.revoked_token import RevokedToken
 from src.models.user import User
 from src.schemas.user import UserSchema

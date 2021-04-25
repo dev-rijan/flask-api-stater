@@ -1,5 +1,5 @@
 from src.extensions import db
-from lib.util_sqlalchemy import ResourceMixin
+from src.mixins.resource import ResourceMixin
 
 
 class RevokedToken(db.Model, ResourceMixin):
