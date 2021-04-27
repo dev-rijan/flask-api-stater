@@ -5,9 +5,8 @@ from marshmallow import ValidationError
 from src.resources.base import BaseView
 from src.schemas.auth import LoginSchema, ResetPasswordRequestSchema, ResetPasswordSchema
 from flask_jwt_extended import (jwt_required,
-                                jwt_refresh_token_required,
                                 get_jwt_identity,
-                                get_raw_jwt)
+                                get_jwt)
 
 from src.services.authentication_manager import AuthenticationManager
 
@@ -75,7 +74,7 @@ class AuthView(BaseView):
     @route('/access/revoke', methods=['POST'])
     @jwt_required
     def access_token_revoke(self):
-        jti = get_raw_jwt()['jti']
+        jti = get_jwt()['jti']
 
         try:
             authentication_manager.revoke_token(jti)
@@ -85,9 +84,9 @@ class AuthView(BaseView):
             return {'message': 'Something went wrong'}, 500
 
     @route('/refresh/revoke', methods=['POST'])
-    @jwt_refresh_token_required
+    @jwt_required(refresh=True)
     def refresh_token_revoke(self):
-        jti = get_raw_jwt()['jti']
+        jti = get_jwt()['jti']
 
         try:
             authentication_manager.revoke_token(jti)
@@ -97,7 +96,7 @@ class AuthView(BaseView):
             return {'message': 'Something went wrong'}, 500
 
     @route('/refresh_token', methods=['POST'])
-    @jwt_refresh_token_required
+    @jwt_required(refresh=True)
     def refresh_token(self):
         current_user = get_jwt_identity()
 

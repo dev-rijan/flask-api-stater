@@ -73,15 +73,15 @@ def authentication(app, user_model):
     def user_identity_lookup(user):
         return user.email
 
-    @jwt.user_claims_loader
+    @jwt.additional_claims_loader
     def add_claims_to_access_token(user):
         return {'role': user.role}
 
-    @jwt.token_in_blacklist_loader
+    @jwt.token_in_blocklist_loader
     def check_if_token_in_blacklist(decrypted_token):
         jti = decrypted_token['jti']
         return RevokedToken.is_jti_blacklisted(jti)
 
-    @jwt.user_loader_callback_loader
+    @jwt.user_lookup_loader
     def user_loader_callback(identity):
         return user_model.find_by_identity(identity)
