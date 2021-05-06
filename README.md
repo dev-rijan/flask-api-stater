@@ -14,8 +14,8 @@ or Install dependencies using `pipenv`
 ```bash
 pipenv install
 ```
-Note:  While installing dependencies if you encounter` pg_config executable not found` error in ubuntu then run 
-`sudo apt-get install libpq-dev` . 
+Note:  While installing dependencies if you encounter` pg_config executable not found` error in ubuntu then run
+`sudo apt-get install libpq-dev` .
 Details https://tutorials.technology/solved_errors/9-Error-pg_config-executable-not-found.html
 
 ## Setup the environment variables
@@ -47,14 +47,14 @@ pipenv run flask db stamp
 make run
 ```
  or
- 
+
  ```bash
 pipenv run gunicorn -c "python:config.gunicorn" "src.app:create_app()"
 ```
 Now your app is available at http://localhost:8000
 
 ## Login
- 
+
  Now admin user is created. You can’t signup an account for admin from UI.
 credentials for admin user is same as defined in `env vars(SEED_ADMIN_USER, SEED_ADMIN_PASSWORD)`
 
@@ -92,7 +92,7 @@ Make up mysql container from test db dir.
  ```
 make build && make start
 ```
- Make build and up IOT api
+ Make build and up api
  ```
 make docker-start
 ```
