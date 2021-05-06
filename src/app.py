@@ -45,7 +45,7 @@ def create_app(settings_override=None):
 
     register_cli_commands(app)
 
-    authentication(app, User)
+    jwt_callbacks(app)
 
     return app
 
@@ -68,7 +68,7 @@ def extensions(app):
     return None
 
 
-def authentication(app, user_model):
+def jwt_callbacks(app, user_model):
     @jwt.user_identity_loader
     def user_identity_lookup(user):
         return user.email

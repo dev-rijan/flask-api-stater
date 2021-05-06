@@ -17,5 +17,5 @@ class RevokedToken(db.Model, ResourceMixin):
         :type jti: str
         :return: boolean
         """
-        query = cls.query.filter_by(jti=jti).first()
-        return bool(query)
+        token = cls.query.filter_by(jti=jti).first()
+        return bool(token)
