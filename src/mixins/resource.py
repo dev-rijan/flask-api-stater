@@ -30,31 +30,6 @@ class ResourceMixin(object):
 
         return field, direction
 
-    @classmethod
-    def get_bulk_action_ids(cls, ids, omit_ids=[]):
-        """
-        Determine which IDs are to be modified.
-
-        :param ids: List of ids to be modified
-        :type ids: list
-        :param omit_ids: Remove 1 or more IDs from the list
-        :type omit_ids: list
-        :param query: Search query (if applicable)
-        :type query: str
-        :return: list
-        """
-        omit_ids = map(str, omit_ids)
-
-        # Remove 1 or more items from the list, this could be useful in spots
-        # where you may want to protect the current user from deleting themself
-        # when bulk deleting user accounts.
-        if omit_ids:
-            ids = [id for id in ids if id not in omit_ids]
-
-        return ids
-
-    @classmethod
-    def bulk_delete(cls, ids):
         """
         Delete 1 or more model instances.
 
