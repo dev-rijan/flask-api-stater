@@ -78,10 +78,11 @@ def authentication(app, user_model):
         return {'role': user.role}
 
     @jwt.token_in_blocklist_loader
-    def check_if_token_in_blacklist(decrypted_token):
-        jti = decrypted_token['jti']
+    def check_if_token_in_blacklist(jwt_header, jwt_payload):
+        jti = jwt_payload['jti']
         return RevokedToken.is_jti_blacklisted(jti)
 
     @jwt.user_lookup_loader
-    def user_loader_callback(identity):
+    def user_loader_callback(jwt_header, jwt_data):
+        identity = jwt_data['sub']
         return user_model.find_by_identity(identity)
