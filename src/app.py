@@ -8,6 +8,7 @@ from src.resources.default_view import DefaultView
 from src.resources.auth import AuthView
 from src.resources.user import UsersView
 from cli import register_cli_commands
+from src.exceptions.api_exception_handler import ApiExceptionHandler
 
 from src.extensions import debug_toolbar, flask_static_digest, db, migrate, ma, jwt, mail
 
@@ -35,6 +36,7 @@ def create_app(settings_override=None):
     app.config['CORS_HEADERS'] = 'Content-Type'
 
     extensions(app)
+    ApiExceptionHandler(app)
 
     if app.debug:
         app.wsgi_app = DebuggedApplication(app.wsgi_app, evalex=True)
