@@ -47,7 +47,7 @@ def create_app(settings_override=None):
 
     register_cli_commands(app)
 
-    jwt_callbacks(app)
+    jwt_callbacks(app, User)
 
     return app
 
