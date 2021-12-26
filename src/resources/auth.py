@@ -72,7 +72,7 @@ class AuthView(BaseView):
         }
 
     @route('/access/revoke', methods=['POST'])
-    @jwt_required
+    @jwt_required()
     def access_token_revoke(self):
         jti = get_jwt()['jti']
 
