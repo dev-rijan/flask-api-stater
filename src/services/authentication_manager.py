@@ -3,6 +3,7 @@ import datetime
 from flask import current_app
 from flask_jwt_extended import create_access_token, create_refresh_token
 from itsdangerous import TimedJSONWebSignatureSerializer
+from werkzeug.exceptions import Unauthorized, Forbidden
 
 from src.utils.flask_mailplus import send_template_message
 from src.models.revoked_token import RevokedToken
@@ -50,10 +51,10 @@ class AuthenticationManager:
         user = User.find_by_identity(data['username'])
 
         if not user or not user.authenticated(password=data['password']):
-            return {'message': 'Identity or password is incorrect.'}, 401
+            raise Unauthorized()
 
         if not user.is_active:
-            return {'message': 'User is disabled, please contact admin'}, 403
+            raise Forbidden()
 
         access_token_expire_in = self._get_access_token_expires_in()
         access_token = create_access_token(

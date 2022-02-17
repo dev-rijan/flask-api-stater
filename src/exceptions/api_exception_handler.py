@@ -1,4 +1,4 @@
-from werkzeug import exceptions
+from werkzeug.exceptions import HTTPException
 from flask import make_response, jsonify
 
 
@@ -9,10 +9,9 @@ class ApiExceptionHandler:
 
     def register(self):
         self.app.register_error_handler(
-            exceptions.TooManyRequests, self._handle_to_many_request)
+            HTTPException, self._handle_http_exception)
 
-    def _handle_to_many_request(self, exception):
+    def _handle_http_exception(self, exception: HTTPException):
         return make_response(
-            jsonify(error="ratelimit exceeded %s" %
-                    exception.description), exceptions.TooManyRequests.code
+            jsonify(error=exception.description, code=exception.code), exception.code
         )
