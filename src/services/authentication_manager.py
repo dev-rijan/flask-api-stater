@@ -2,7 +2,6 @@ import datetime
 
 from flask import current_app
 from flask_jwt_extended import create_access_token, create_refresh_token
-from itsdangerous import TimedJSONWebSignatureSerializer
 
 from src.utils.flask_mailplus import send_template_message
 from src.models.revoked_token import RevokedToken
@@ -114,14 +113,15 @@ class AuthenticationManager:
         :type token: str
         :return: User instance or None
         """
-        private_key = TimedJSONWebSignatureSerializer(
-            current_app.config['SECRET_KEY'])
-        try:
-            decoded_payload = private_key.loads(token)
+        pass
+        # private_key = TimedJSONWebSignatureSerializer(
+        #     current_app.config['SECRET_KEY'])
+        # try:
+        #     decoded_payload = private_key.loads(token)
 
-            return cls.find_by_identity(decoded_payload.get('user_email'))
-        except Exception:
-            return None
+        #     return cls.find_by_identity(decoded_payload.get('user_email'))
+        # except Exception:
+        #     return None
 
     @staticmethod
     def serialize_token(user, expiration=3600):
@@ -133,10 +133,11 @@ class AuthenticationManager:
         :type expiration: int
         :return: JSON
         """
-        private_key = current_app.config['SECRET_KEY']
+        pass
+        # private_key = current_app.config['SECRET_KEY']
 
-        serializer = TimedJSONWebSignatureSerializer(private_key, expiration)
-        return serializer.dumps({'user_email': user.email}).decode('utf-8')
+        # serializer = TimedJSONWebSignatureSerializer(private_key, expiration)
+        # return serializer.dumps({'user_email': user.email}).decode('utf-8')
 
     @staticmethod
     def _get_access_token_expires_in():

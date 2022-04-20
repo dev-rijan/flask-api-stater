@@ -6,8 +6,7 @@ from sqlalchemy import or_
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.sql import expression
 
-from itsdangerous import URLSafeTimedSerializer, \
-    TimedJSONWebSignatureSerializer
+from itsdangerous import URLSafeTimedSerializer
 
 from src.mixins.resource import ResourceMixin
 from src.extensions import db
@@ -88,14 +87,15 @@ class User(ResourceMixin, db.Model):
         :type token: str
         :return: User instance or None
         """
-        private_key = TimedJSONWebSignatureSerializer(
-            current_app.config['SECRET_KEY'])
-        try:
-            decoded_payload = private_key.loads(token)
+        pass
+        # private_key = TimedJSONWebSignatureSerializer(
+        #     current_app.config['SECRET_KEY'])
+        # try:
+        #     decoded_payload = private_key.loads(token)
 
-            return User.find_by_identity(decoded_payload.get('user_email'))
-        except Exception:
-            return None
+        #     return User.find_by_identity(decoded_payload.get('user_email'))
+        # except Exception:
+        #     return None
 
     @classmethod
     def search(cls, query):
@@ -182,10 +182,11 @@ class User(ResourceMixin, db.Model):
         :type expiration: int
         :return: JSON
         """
-        private_key = current_app.config['SECRET_KEY']
+        pass
+        # private_key = current_app.config['SECRET_KEY']
 
-        serializer = TimedJSONWebSignatureSerializer(private_key, expiration)
-        return serializer.dumps({'user_email': self.email}).decode('utf-8')
+        # serializer = TimedJSONWebSignatureSerializer(private_key, expiration)
+        # return serializer.dumps({'user_email': self.email}).decode('utf-8')
 
     def is_admin(self):
         """
