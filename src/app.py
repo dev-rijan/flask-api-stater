@@ -7,6 +7,7 @@ from src.models.user import User
 from src.resources.default_view import DefaultView
 from src.resources.auth import AuthView
 from src.resources.user import UsersView
+from src.resources.docs import DocsView
 from cli import register_cli_commands
 from src.exceptions.api_exception_handler import ApiExceptionHandler
 
@@ -43,6 +44,7 @@ def create_app(settings_override=None):
 
     UsersView.register(app, trailing_slash=False)
     AuthView.register(app)
+    DocsView.register(app, trailing_slash=False)
     DefaultView.register(app, trailing_slash=False)
 
     register_cli_commands(app)
