@@ -4,13 +4,11 @@ from werkzeug.debug import DebuggedApplication
 
 from src.models.revoked_token import RevokedToken
 from src.models.user import User
-from src.resources.default_view import DefaultView
-from src.resources.auth import AuthView
-from src.resources.user import UsersView
 from cli import register_cli_commands
 from src.exceptions.api_exception_handler import ApiExceptionHandler
+from src import routes
 
-from src.extensions import debug_toolbar, flask_static_digest, db, migrate, ma, jwt, mail
+from src.extensions import debug_toolbar, flask_static_digest, db, migrate, ma, jwt, mail, apispec
 
 
 def create_app(settings_override=None):
@@ -36,14 +34,11 @@ def create_app(settings_override=None):
     app.config['CORS_HEADERS'] = 'Content-Type'
 
     extensions(app)
+    routes.register(app)
     ApiExceptionHandler(app)
 
     if app.debug:
         app.wsgi_app = DebuggedApplication(app.wsgi_app, evalex=True)
-
-    UsersView.register(app, trailing_slash=False)
-    AuthView.register(app)
-    DefaultView.register(app, trailing_slash=False)
 
     register_cli_commands(app)
 
@@ -66,6 +61,7 @@ def extensions(app):
     jwt.init_app(app)
     migrate.init_app(app=app, db=db)
     mail.init_app(app)
+    apispec.init_app(app, info=dict(description="A minimal flask API"),)
 
     return None
 

@@ -7,6 +7,7 @@ from src.schemas.auth import LoginSchema, ResetPasswordRequestSchema, ResetPassw
 from flask_jwt_extended import (jwt_required,
                                 get_jwt_identity,
                                 get_jwt)
+from src.schemas.default import SuccessSchema
 
 from src.services.authentication_manager import AuthenticationManager
 
@@ -14,11 +15,28 @@ login_schema = LoginSchema()
 reset_password_schema = ResetPasswordSchema()
 reset_password_request_schema = ResetPasswordRequestSchema()
 authentication_manager = AuthenticationManager()
+succsss_schema = SuccessSchema()
 
 
 class AuthView(BaseView):
     @route('/login', methods=['POST'])
     def login(self):
+        """Login Resource
+        ---
+        description: Login with username/email and password
+        security:
+          - jwt: []
+        requestBody:
+          content:
+            application/json:
+              schema: LoginSchema
+        responses:
+          200:
+            content:
+              application/json:
+                schema: LoginResponseSchema
+        """
+
         json_data = request.get_json()
 
         try:
@@ -30,6 +48,19 @@ class AuthView(BaseView):
 
     @route('/reset_password_request', methods=['POST'])
     def reset_password_request(self):
+        """Reset password request resources
+        ---
+        description: Request for reset password with registered user email
+        requestBody:
+          content:
+            application/json:
+              schema: ResetPasswordRequestSchema
+        responses:
+          200:
+            content:
+              application/json:
+                schema: SuccessSchema
+        """
         json_data = request.get_json()
 
         try:
@@ -38,20 +69,41 @@ class AuthView(BaseView):
         except ValidationError as error:
             return {'errors': error.messages}, 422
 
-        user = authentication_manager.find_by_identity(data['identity'])
+        user = authentication_manager.find_by_identity(data['email'])
 
         if not user:
             return {'message': "Can\'t find username or email"}, 422
 
         authentication_manager.initialize_password_reset(user)
 
-        return {
-            'success': True,
+        response = {
+            'code': 200,
             'message': 'Successfully sent password reset mail'
         }
 
+        return succsss_schema.dump(response)
+
     @route('/reset_password/<token>', methods=['POST'])
     def reset_password(self, token):
+        """Reset password request resources
+        ---
+        description: Reset password with token which is sent to registered user`s email
+        requestBody:
+          content:
+            application/json:
+              schema: ResetPasswordSchema
+        parameters:
+        - name: "token"
+          in: "path"
+          description: "Token that is sent in users email"
+          required: true
+          type: "string"
+        responses:
+          200:
+            content:
+              application/json:
+                schema: SuccessSchema
+        """
         json_data = request.get_json()
 
         try:
@@ -66,10 +118,12 @@ class AuthView(BaseView):
 
         authentication_manager.reset_password(user, data['password'])
 
-        return {
-            'success': True,
+        response = {
+            'code': 200,
             'message': 'Successfully reset password'
         }
+
+        return succsss_schema.dump(response)
 
     @route('/access/revoke', methods=['POST'])
     @jwt_required()

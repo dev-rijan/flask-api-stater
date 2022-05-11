@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_static_digest import FlaskStaticDigest
 from flask_migrate import Migrate
 from flask_marshmallow import Marshmallow
+from flask_classful_apispec import APISpec
 
 debug_toolbar = DebugToolbarExtension()
 flask_static_digest = FlaskStaticDigest()
@@ -13,3 +14,4 @@ migrate = Migrate()
 mail = Mail()
 ma = Marshmallow()
 jwt = JWTManager()
+apispec = APISpec()
