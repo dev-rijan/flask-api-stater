@@ -20,7 +20,7 @@ class ResetPasswordSchema(ma.Schema):
 
 
 class ResetPasswordRequestSchema(ma.Schema):
-    identity = fields.String(required=True)
+    email = fields.Email(required=True)
 
 
 class SignUpSchema(LoginSchema):
