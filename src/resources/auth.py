@@ -19,6 +19,20 @@ authentication_manager = AuthenticationManager()
 class AuthView(BaseView):
     @route('/login', methods=['POST'])
     def login(self):
+        """Login Resource
+        ---
+        description: Login with username/email and password
+        requestBody:
+          content:
+            application/json:
+              schema: LoginSchema
+        responses:
+          200:
+            content:
+              application/json:
+                schema: LoginResponseSchema
+        """
+
         json_data = request.get_json()
 
         try:
