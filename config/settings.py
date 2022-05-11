@@ -40,4 +40,9 @@ JWT_BLACKLIST_TOKEN_CHECKS = ['access', 'refresh']
 ACCESS_TOKEN_EXPIRES_IN = int(os.getenv('ACCESS_TOKEN_EXPIRES_IN', 10))  # in minutes
 REFRESH_TOKEN_EXPIRES_IN = int(os.getenv('REFRESH_TOKEN_EXPIRES_IN', 5)) # in days
 
+#Apispec config
+DOC_TITLE = os.getenv('DOC_TITLE')
+DOC_VERSION = os.getenv('DOC_VERSION')
+DOC_OPEN_API_VERSION = os.getenv('DOC_OPEN_API_VERSION', '3.0.2')
+
 TIMEZONE = os.getenv('TIMEZONE', 'Asia/Tokyo')

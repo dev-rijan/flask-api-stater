@@ -10,7 +10,7 @@ from src.resources.user import UsersView
 from cli import register_cli_commands
 from src.exceptions.api_exception_handler import ApiExceptionHandler
 
-from src.extensions import debug_toolbar, flask_static_digest, db, migrate, ma, jwt, mail
+from src.extensions import debug_toolbar, flask_static_digest, db, migrate, ma, jwt, mail, apispec
 
 
 def create_app(settings_override=None):
@@ -66,6 +66,7 @@ def extensions(app):
     jwt.init_app(app)
     migrate.init_app(app=app, db=db)
     mail.init_app(app)
+    apispec.init_app(app, info=dict(description="A minimal flask API"),)
 
     return None
 
