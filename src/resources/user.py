@@ -27,6 +27,17 @@ update_password_schema = UpdatePasswordSchema()
 class UsersView(BaseView):
     @admin_required
     def index(self):
+        """Get all users Resource
+        ---
+        description: Get all Users
+        security:
+          - jwt: []
+        responses:
+          200:
+            content:
+              application/json:
+                schema: UserSchema
+        """
         users = UserService.get_all()
 
         return {
@@ -35,6 +46,23 @@ class UsersView(BaseView):
 
     @admin_required
     def get(self, id):
+        """Get single user Resource
+        ---
+        description: Get User
+        security:
+          - jwt: []
+        parameters:
+        - name: "id"
+          in: "path"
+          description: "id of required user"
+          required: true
+          type: "int"
+        responses:
+          200:
+            content:
+              application/json:
+                schema: UserSchema
+        """
         user = UserService.get_by_id(id)
         if not user:
             return {'errors': 'user not found'}, 422
@@ -45,6 +73,21 @@ class UsersView(BaseView):
 
     @admin_required
     def post(self):
+        """Create User Resource
+        ---
+        description: Create User
+        security:
+          - jwt: []
+        requestBody:
+          content:
+            application/json:
+              schema: CreateUserSchema
+        responses:
+          200:
+            content:
+              application/json:
+                schema: UserSchema
+        """
         json_data = request.get_json()
         try:
             data = create_user_schema.load(json_data)
@@ -59,6 +102,21 @@ class UsersView(BaseView):
 
     @admin_required
     def put(self, id):
+        """Update User Resource
+        ---
+        description: Update User
+        security:
+          - jwt: []
+        requestBody:
+          content:
+            application/json:
+              schema: UpdateUserSchema
+        responses:
+          200:
+            content:
+              application/json:
+                schema: UserSchema
+        """
         json_data = request.get_json()
         try:
             data = update_user_schema.load(json_data)
@@ -74,6 +132,18 @@ class UsersView(BaseView):
     @route('<id>/enable', methods=['POST'])
     @admin_required
     def enable(self, id):
+        """Enable User Resource
+        ---
+        description: Enable User
+        security:
+          - jwt: []
+        responses:
+          200:
+            content:
+              application/json:
+                schema: UserSchema
+        """
+
         user = UserService.enable(id)
 
         return {
@@ -83,22 +153,18 @@ class UsersView(BaseView):
     @route('<id>/disable', methods=['POST'])
     @admin_required
     def disable(self, id):
+        """Disable User Resource
+        ---
+        description: Disable User
+        security:
+          - jwt: []
+        responses:
+          200:
+            content:
+              application/json:
+                schema: UserSchema
+        """
         user = UserService.disable(id)
-
-        return {
-            'user': user_schema.dump(user)
-        }
-
-    @route('/update_identity', methods=['POST'])
-    @auth_required
-    def update_identity(self):
-        json_data = request.get_json()
-        try:
-            data = update_identity_schema.load(json_data)
-        except ValidationError as error:
-            return {'errors': error.messages}, 422
-
-        user = UserService.update_identity(data, current_user)
 
         return {
             'user': user_schema.dump(user)
@@ -107,6 +173,21 @@ class UsersView(BaseView):
     @route('/update_password', methods=['POST'])
     @auth_required
     def update_password(self):
+        """Update Password Resource
+        ---
+        description: Update Password
+        security:
+          - jwt: []
+        requestBody:
+          content:
+            application/json:
+              schema: UpdatePasswordSchema
+        responses:
+          200:
+            content:
+              application/json:
+                schema: UserSchema
+        """
         json_data = request.get_json()
         try:
             data = update_password_schema.load(json_data)
@@ -121,19 +202,4 @@ class UsersView(BaseView):
         return {
             'success': True,
             'message': 'Successfully updated password'
-        }
-
-    @route('/update_profile', methods=['POST'])
-    @auth_required
-    def update_profile(self):
-        json_data = request.get_json()
-        try:
-            data = profile_schema.load(json_data)
-        except ValidationError as error:
-            return {'errors': error.messages}, 422
-
-        profile = UserService.update_profile(data, current_user)
-
-        return {
-            'profile': profile_schema.dump(profile)
         }

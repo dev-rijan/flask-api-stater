@@ -22,6 +22,8 @@ class UserSchema(ma.Schema):
 
 class CreateUserSchema(UserSchema):
     password = fields.String(required=True)
+    profile = ma.Nested(ProfileSchema(exclude=('id', )))
+
 
     @validates_schema
     def validate_email(self, data, **kwargs):

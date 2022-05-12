@@ -1,0 +1,5 @@
+make: Entering directory '/home/madan/projects/others/new_projects/flask-api'
+printf "\033[0;32m>>> Running app\033[0m\n"
+pipenv run gunicorn -c "python:config.gunicorn" "src.app:create_app()"
+make: Leaving directory '/home/madan/projects/others/new_projects/flask-api'
+ 
