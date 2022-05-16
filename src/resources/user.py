@@ -7,21 +7,27 @@ from src.decorators.acl_decorators import admin_required, auth_required
 from src.resources.base import BaseView
 from src.schemas.user import (
     CreateUserSchema,
+    CreateUser,
+    UpdateUser,
     UserSchema,
     UpdateUserSchema,
     UpdateIdentitySchema,
     UpdatePasswordSchema,
     ProfileSchema
 )
+from src.schemas.default import SuccessSchema
 from src.services.user import UserService
 
 create_user_schema = CreateUserSchema()
+create_user = CreateUser()
+update_user = UpdateUser()
 profile_schema = ProfileSchema()
 update_user_schema = UpdateUserSchema()
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
 update_identity_schema = UpdateIdentitySchema()
 update_password_schema = UpdatePasswordSchema()
+succsss_schema = SuccessSchema()
 
 
 class UsersView(BaseView):
@@ -90,7 +96,7 @@ class UsersView(BaseView):
         """
         json_data = request.get_json()
         try:
-            data = create_user_schema.load(json_data)
+            data = create_user.load(json_data)
         except ValidationError as error:
             return {'errors': error.messages}, 422
 
@@ -107,6 +113,12 @@ class UsersView(BaseView):
         description: Update User
         security:
           - jwt: []
+        parameters:
+        - name: "id"
+          in: "path"
+          description: "id of required user"
+          required: true
+          type: "int"
         requestBody:
           content:
             application/json:
@@ -119,7 +131,7 @@ class UsersView(BaseView):
         """
         json_data = request.get_json()
         try:
-            data = update_user_schema.load(json_data)
+            data = update_user.load(json_data)
         except ValidationError as error:
             return {'errors': error.messages}, 422
 
@@ -137,6 +149,12 @@ class UsersView(BaseView):
         description: Enable User
         security:
           - jwt: []
+        parameters:
+        - name: "id"
+          in: "path"
+          description: "id of user to enable"
+          required: true
+          type: "int"
         responses:
           200:
             content:
@@ -158,6 +176,12 @@ class UsersView(BaseView):
         description: Disable User
         security:
           - jwt: []
+        parameters:
+        - name: "id"
+          in: "path"
+          description: "id of user to disable"
+          required: true
+          type: "int"
         responses:
           200:
             content:
@@ -186,7 +210,7 @@ class UsersView(BaseView):
           200:
             content:
               application/json:
-                schema: UserSchema
+                schema: SuccessSchema
         """
         json_data = request.get_json()
         try:
@@ -199,7 +223,8 @@ class UsersView(BaseView):
 
         UserService.update_password(data['new_password'], current_user)
 
-        return {
+        response = {
             'success': True,
             'message': 'Successfully updated password'
         }
+        return succsss_schema.dump(response)
