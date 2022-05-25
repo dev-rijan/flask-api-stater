@@ -10,12 +10,10 @@ class ResourceTestMixin(object):
    """
 
     @pytest.fixture(autouse=True)
-    def set_common_fixtures(self, session, client, users, models, customer_machines):
+    def set_common_fixtures(self, session, client, users):
         self.session = session
         self.client = client
         self.users = users
-        self.models = models
-        self.customer_machines = customer_machines
 
     def get_authorization_header(self, identity=settings.SEED_ADMIN_EMAIL, password=settings.SEED_ADMIN_PASSWORD):
         """

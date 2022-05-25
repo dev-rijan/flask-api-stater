@@ -7,14 +7,9 @@ from sqlalchemy import event
 
 from src.app import create_app
 from src.extensions import db as _db
-from src.models import CustomerMachine
-from src.models.machine_model import MachineModel
 from src.models.user import User
 from config import settings
 from src.resources.auth import authentication_manager
-from src.services.machine_model import MachineModelService
-from src.services.operating_time import OperatingTimeService
-from src.services.rotation import RotationService
 from src.services.user import UserService
 
 fake = Faker()
@@ -27,7 +22,7 @@ def app():
 
     :return: Flask app
     """
-    db_uri = '{0}_test'.format(settings.SQLALCHEMY_DATABASE_URI)
+    db_uri = '{0}'.format(settings.SQLALCHEMY_DATABASE_URI)
 
     params = {
         'DEBUG': False,
@@ -86,7 +81,7 @@ def users(db):
             }
         },
         {
-            'role': User.ROLE_CLIENT,
+            'role': User.ROLE_USER,
             'email': 'client@endo.com',
             'password': 'client@password',
             'profile': {
@@ -95,7 +90,7 @@ def users(db):
             }
         },
         {
-            'role': User.ROLE_CLIENT,
+            'role': User.ROLE_USER,
             'email': 'client2@endo.com',
             'password': 'client2@password',
             'profile': {
@@ -104,16 +99,7 @@ def users(db):
             }
         },
         {
-            'role': User.ROLE_IOT,
-            'email': 'iot@endo.com',
-            'password': 'iot@password',
-            'profile': {
-                'name': 'iot name',
-                'name_kana': 'iot kana'
-            }
-        },
-        {
-            'role': User.ROLE_CLIENT,
+            'role': User.ROLE_USER,
             'email': 'disabled@endo.com',
             'password': 'disabled@password',
             'is_active': False,
@@ -188,79 +174,6 @@ def session(app, db):
         conn.close()
 
 
-@pytest.yield_fixture(scope='session')
-def models(db):
-    for i in range(0, 5):
-        data = {
-            'name': f"new_model_{i}"
-        }
-
-        db.session.add(MachineModel(**data))
-
-    db.session.commit()
-
-    return db
-
-
-@pytest.yield_fixture(scope='session')
-def customer_machines(db):
-    customers = UserService.get_all_customers()
-    machine_models = MachineModelService.get_all()
-
-    for i in range(0, 5):
-        customer = random.choice(customers)
-        model = random.choice(machine_models)
-
-        data = {
-            'code': f"new_model_{i}",
-            'customer_id': customer.id,
-            'model_id': model.id
-        }
-
-        db.session.add(CustomerMachine(**data))
-
-    db.session.commit()
-
-    return db
-
-
-@pytest.yield_fixture(scope='function')
-def rotations(db):
-    customers = UserService.get_all_customers()
-
-    for customer in customers:
-        machines = CustomerMachine.query.filter(CustomerMachine.customer_id == customer.id)
-        for machine in machines:
-            for i in range(0, 10):
-                date = _get_rotation_date(machine.id)
-                data = {
-                    'date': date,
-                    'shaft_a_normal_rotation': random.randrange(200, 600),
-                    'shaft_a_reverse_rotation': random.randrange(200, 600),
-                    'customer_machine_id': machine.id
-                }
-
-                RotationService.create(data)
-
-
-@pytest.yield_fixture(scope='function')
-def operating_times(db):
-    customers = UserService.get_all_customers()
-
-    for customer in customers:
-        machines = CustomerMachine.query.filter(CustomerMachine.customer_id == customer.id)
-        for machine in machines:
-            for i in range(0, 10):
-                date = _get_operating_time_date(machine.id)
-                data = {
-                    'date': date,
-                    'duration': random.randrange(10000, 50000),
-                    'customer_machine_id': machine.id
-                }
-
-                OperatingTimeService.create(data)
-
-
 @pytest.yield_fixture(scope='function')
 def random_date():
     return _get_random_date()
@@ -272,19 +185,3 @@ def _get_random_date():
     to_date = datetime.date(year=today.year, month=today.month, day=today.day)
 
     return fake.date_between(from_date, to_date)
-
-
-def _get_rotation_date(machine_id):
-    date = _get_random_date().strftime("%Y-%m-%d")
-    if RotationService.is_exists(date, machine_id):
-        date = _get_rotation_date(machine_id)
-
-    return date
-
-
-def _get_operating_time_date(machine_id):
-    date = _get_random_date().strftime("%Y-%m-%d")
-    if OperatingTimeService.is_exists(date, machine_id):
-        date = _get_operating_time_date(machine_id)
-
-    return date
