@@ -22,7 +22,7 @@ def app():
 
     :return: Flask app
     """
-    db_uri = '{0}'.format(settings.SQLALCHEMY_DATABASE_URI)
+    db_uri = '{0}_test'.format(settings.SQLALCHEMY_DATABASE_URI)
 
     params = {
         'DEBUG': False,
