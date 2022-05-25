@@ -13,6 +13,7 @@ def register(app):
 
     with app.test_request_context():
         apispec.paths(AuthView, app)
+        apispec.paths(UsersView, app)
 
     jwt_scheme = {"type": "http", "scheme": "bearer", "bearerFormat": "JWT"}
     apispec.components.security_scheme("jwt", jwt_scheme)

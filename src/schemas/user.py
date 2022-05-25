@@ -19,9 +19,46 @@ class UserSchema(ma.Schema):
     username = fields.String(required=True)
     profile = ma.Nested(ProfileSchema, required=True)
 
+class CreateUser(ma.Schema):
+    role = fields.String(required=True)
+    email = fields.Email(required=True)
+    is_active = fields.Boolean(dump_only=True)
+    username = fields.String(required=True)
+    name = fields.String(required=True)
+    name_kana = fields.String(required=True)
+    password = fields.String(required=True)
+
+    @validates_schema
+    def validate_email(self, data, **kwargs):
+        if UserService.find_by_identity(data['email']):
+            raise ValidationError('Email must be unique.')
+
+    @validates_schema
+    def validate_username(self, data, **kwargs):
+        if UserService.find_by_identity(data['username']):
+            raise ValidationError('Username must be unique.')
+
+class UpdateUser(CreateUser):    
+    id = fields.Integer(required=True)
+
+    @validates_schema
+    def validate_email(self, data, **kwargs):
+        user = UserService.find_by_identity(data['email'])
+
+        if user and user.id != data['id']:
+            raise ValidationError('Email must be unique.')
+
+    @validates_schema
+    def validate_username(self, data, **kwargs):
+        user = UserService.find_by_identity(data['username'])
+
+        if user and user.id != data['id']:
+            raise ValidationError('Username must be unique.')
 
 class CreateUserSchema(UserSchema):
     password = fields.String(required=True)
+    profile = ma.Nested(ProfileSchema(exclude=('id', )))
+
 
     @validates_schema
     def validate_email(self, data, **kwargs):
