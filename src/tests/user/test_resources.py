@@ -24,10 +24,6 @@ def _get_random_user():
         {
             'email': 'client2@endo.com',
             'password': 'client2@password'
-        },
-        {
-            'email': 'iot@endo.com',
-            'password': 'iot@password'
         }
     ]
 
@@ -57,13 +53,7 @@ class TestUserResources(ResourceTestMixin):
         response = self.client.post(url_for('UsersView:enable', id=1))
         assert response.status_code == 401
 
-        response = self.client.post(url_for('UsersView:update_identity'))
-        assert response.status_code == 401
-
         response = self.client.post(url_for('UsersView:update_password'))
-        assert response.status_code == 401
-
-        response = self.client.post(url_for('UsersView:update_profile'))
         assert response.status_code == 401
 
     def test_client_user_access_users_list(self):
@@ -71,15 +61,6 @@ class TestUserResources(ResourceTestMixin):
         Client user cant not access users list, should respond with 403(Forbidden) status
         """
         headers = self.get_authorization_header(identity='client@endo.com', password='client@password')
-
-        response = self.client.get(url_for('UsersView:index'), headers=headers)
-        assert response.status_code == 403
-
-    def test_iot_user_access_users_list(self):
-        """
-        IoT user cant not access users list, should respond with 403(Forbidden) status
-        """
-        headers = self.get_authorization_header(identity='iot@endo.com', password='iot@password')
 
         response = self.client.get(url_for('UsersView:index'), headers=headers)
         assert response.status_code == 403
@@ -93,29 +74,11 @@ class TestUserResources(ResourceTestMixin):
         response = self.client.get(url_for('UsersView:get', id=2), headers=headers)
         assert response.status_code == 403
 
-    def test_iot_user_access_user(self):
-        """
-        IOT user cant not access user, should respond with 403(Forbidden) status
-        """
-        headers = self.get_authorization_header(identity='iot@endo.com', password='iot@password')
-
-        response = self.client.get(url_for('UsersView:get', id=2), headers=headers)
-        assert response.status_code == 403
-
     def test_client_can_not_create_user(self):
         """
         Client user cant not create user, should respond with 403(Forbidden) status
         """
         headers = self.get_authorization_header(identity='client@endo.com', password='client@password')
-
-        response = self.client.post(url_for('UsersView:post'), headers=headers)
-        assert response.status_code == 403
-
-    def test_iot_can_not_create_user(self):
-        """
-        IOT user cant not create user, should respond with 403(Forbidden) status
-        """
-        headers = self.get_authorization_header(identity='iot@endo.com', password='iot@password')
 
         response = self.client.post(url_for('UsersView:post'), headers=headers)
         assert response.status_code == 403
@@ -129,29 +92,11 @@ class TestUserResources(ResourceTestMixin):
         response = self.client.put(url_for('UsersView:put', id=1), headers=headers)
         assert response.status_code == 403
 
-    def test_iot_can_not_update_user(self):
-        """
-        IOT user cant not update specific user, should respond with 403(Forbidden) status
-        """
-        headers = self.get_authorization_header(identity='iot@endo.com', password='iot@password')
-
-        response = self.client.put(url_for('UsersView:put', id=1), headers=headers)
-        assert response.status_code == 403
-
     def test_client_can_not_disable_user(self):
         """
         Client user cant not disable specific user, should respond with 403(Forbidden) status
         """
         headers = self.get_authorization_header(identity='client@endo.com', password='client@password')
-
-        response = self.client.post(url_for('UsersView:disable', id=1), headers=headers)
-        assert response.status_code == 403
-
-    def test_iot_can_not_disable_user(self):
-        """
-        IOT user cant not disable specific user, should respond with 403(Forbidden) status
-        """
-        headers = self.get_authorization_header(identity='iot@endo.com', password='iot@password')
 
         response = self.client.post(url_for('UsersView:disable', id=1), headers=headers)
         assert response.status_code == 403
@@ -164,33 +109,6 @@ class TestUserResources(ResourceTestMixin):
 
         response = self.client.post(url_for('UsersView:enable', id=1), headers=headers)
         assert response.status_code == 403
-
-    def test_iot_can_not_enable_user(self):
-        """
-        IOT user cant not disable specific user, should respond with 403(Forbidden) status
-        """
-        headers = self.get_authorization_header(identity='iot@endo.com', password='iot@password')
-
-        response = self.client.post(url_for('UsersView:enable', id=1), headers=headers)
-        assert response.status_code == 403
-
-    def test_update_identity(self):
-        """
-        User should be able to update own identity
-        """
-        user = _get_random_user()
-
-        headers = self.get_authorization_header(identity=user['email'], password=user['password'])
-        data = {
-            'email': 'updatedEmail@endo.com',
-            'username': 'updatedUsername'
-        }
-
-        response = self.client.post(url_for('UsersView:update_identity'), json=data, headers=headers)
-        actual_result = response.get_json()['user']
-        assert response.status_code == 200
-        assert data['email'] == actual_result['email']
-        assert data['username'] == actual_result['username']
 
     def test_update_password(self):
         """
@@ -206,27 +124,6 @@ class TestUserResources(ResourceTestMixin):
 
         response = self.client.post(url_for('UsersView:update_password'), json=data, headers=headers)
         assert response.status_code == 200
-        assert response.get_json()['success'] is True
-
-    def test_update_profile(self):
-        """
-        User should be able to update own profile
-        """
-
-        user = _get_random_user()
-
-        headers = self.get_authorization_header(identity=user['email'], password=user['password'])
-        data = {
-            'name': 'updated_name',
-            'name_kana': 'updated_name_kana'
-        }
-
-        response = self.client.post(url_for('UsersView:update_profile'), json=data, headers=headers)
-        updated_profile = response.get_json()['profile']
-
-        assert response.status_code == 200
-        assert data['name'] == updated_profile['name']
-        assert data['name_kana'] == updated_profile['name_kana']
 
     def test_users_list(self):
         """
@@ -238,7 +135,7 @@ class TestUserResources(ResourceTestMixin):
         assert response.status_code == 200
 
         # users count should same to users created on fixture
-        assert len(response.get_json()['users']) == 5
+        assert len(response.get_json()['users']) == 4
 
     def test_get_user(self):
         """
@@ -246,7 +143,7 @@ class TestUserResources(ResourceTestMixin):
         """
         headers = self.get_authorization_header()
 
-        user_id = random.choice([1, 2, 3, 4, 5])
+        user_id = random.choice([1, 2, 3, 4])
         response = self.client.get(url_for('UsersView:get', id=user_id), headers=headers)
 
         assert response.status_code == 200
@@ -268,6 +165,7 @@ class TestUserResources(ResourceTestMixin):
         }
 
         response = self.client.post(url_for('UsersView:post'), json=data, headers=headers)
+
         actual_result = response.get_json()['user']
         # remove id from actual result to compare with expected result
         actual_result.pop('id')
