@@ -34,4 +34,4 @@ flask-classful-apispec = "*"
 apispec = "*"
 
 [requires]
-python_version = "3"
+python_version = ">=3.6"
