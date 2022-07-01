@@ -15,6 +15,12 @@ class LoginResponseSchema(ma.Schema):
     user = ma.Nested(UserSchema)
 
 
+class RefreshTokenSchema(ma.Schema):
+    access_token = fields.String()
+    refresh_token = fields.String()
+    expires_in = fields.Integer()
+
+
 class ResetPasswordSchema(ma.Schema):
     password = fields.String(required=True)
 

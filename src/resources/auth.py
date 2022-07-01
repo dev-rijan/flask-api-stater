@@ -3,7 +3,7 @@ from flask_classful import route
 from marshmallow import ValidationError
 
 from src.resources.base import BaseView
-from src.schemas.auth import LoginSchema, ResetPasswordRequestSchema, ResetPasswordSchema
+from src.schemas.auth import LoginSchema, RefreshTokenSchema, ResetPasswordRequestSchema, ResetPasswordSchema
 from flask_jwt_extended import (jwt_required,
                                 get_jwt_identity,
                                 get_jwt)
@@ -24,6 +24,8 @@ class AuthView(BaseView):
         """Login Resource
         ---
         description: Login with username/email and password
+        tags:
+          - auth
         security:
           - jwt: []
         requestBody:
@@ -51,6 +53,8 @@ class AuthView(BaseView):
         """Reset password request resources
         ---
         description: Request for reset password with registered user email
+        tags:
+          - auth
         requestBody:
           content:
             application/json:
@@ -88,6 +92,8 @@ class AuthView(BaseView):
         """Reset password request resources
         ---
         description: Reset password with token which is sent to registered user`s email
+        tags:
+          - auth
         requestBody:
           content:
             application/json:
@@ -152,6 +158,25 @@ class AuthView(BaseView):
     @route('/refresh_token', methods=['POST'])
     @jwt_required(refresh=True)
     def refresh_token(self):
+        """Get an access token from a refresh token
+          ---
+          tags:
+            - auth
+          security:
+          - jwt: []
+          summary: Get an access token
+          description: Get an access token by using a refresh token in the `Authorization` header
+          responses:
+            200:
+              content:
+                application/json:
+                  schema: RefreshTokenSchema
+            400:
+              description: bad request
+            401:
+              description: unauthorized
+        """
         current_user = get_jwt_identity()
+        tokens = authentication_manager.refresh_token(identity=current_user)
 
-        return authentication_manager.refresh_token(identity=current_user)
+        return RefreshTokenSchema().dump(tokens)

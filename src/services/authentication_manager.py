@@ -69,8 +69,7 @@ class AuthenticationManager:
         return {
             'expires_in': access_token_expire_in.total_seconds(),
             'access_token': access_token,
-            'refresh_token': refresh_token,
-            'user': user_schema.dump(user)
+            'refresh_token': refresh_token
         }
 
     def refresh_token(self, identity):
@@ -80,10 +79,18 @@ class AuthenticationManager:
             return {'message': 'User is disabled, please contact admin'}, 401
 
         access_token_expire_in = self._get_access_token_expires_in()
-        access_token = create_access_token(identity=user, expires_delta=access_token_expire_in)
+        access_token = create_access_token(
+            identity=user,
+            expires_delta=access_token_expire_in
+        )
+        refresh_token = create_refresh_token(
+            identity=user,
+            expires_delta=self._get_refresh_token_expires_in()
+        )
 
         return {
             'access_token': access_token,
+            'refresh_token': refresh_token,
             'expires_in': access_token_expire_in.total_seconds()
         }
 
