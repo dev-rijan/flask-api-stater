@@ -1,4 +1,4 @@
-from flask import request, current_app
+from flask import request
 from flask_classful import route
 from marshmallow import ValidationError
 
@@ -131,9 +131,32 @@ class AuthView(BaseView):
 
         return succsss_schema.dump(response)
 
-    @route('/access/revoke', methods=['POST'])
+    @route('/access/revoke', methods=['DELETE'])
     @jwt_required()
     def access_token_revoke(self):
+        """Get an access token from a refresh token
+          ---
+          tags:
+            - auth
+          security:
+          - jwt: []
+          summary: Revoke an access token
+          description: Revoke an access token
+          responses:
+            200:
+              content:
+                application/json:
+                  schema:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: access token has been revoked
+            400:
+              description: bad request
+            401:
+              description: unauthorized
+        """
         jti = get_jwt()['jti']
 
         try:
@@ -143,9 +166,32 @@ class AuthView(BaseView):
         except:
             return {'message': 'Something went wrong'}, 500
 
-    @route('/refresh/revoke', methods=['POST'])
+    @route('/refresh/revoke', methods=['DELETE'])
     @jwt_required(refresh=True)
     def refresh_token_revoke(self):
+        """Get an access token from a refresh token
+          ---
+          tags:
+            - auth
+          security:
+          - jwt: []
+          summary: Revoke an refresh token
+          description: Revoke an refresh token
+          responses:
+            200:
+              content:
+                application/json:
+                  schema:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: refresh token has been revoked
+            400:
+              description: bad request
+            401:
+              description: unauthorized
+        """
         jti = get_jwt()['jti']
 
         try:
