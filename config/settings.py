@@ -24,7 +24,7 @@ MAIL_USE_SSL = bool(strtobool(os.getenv('MAIL_USE_SSL', 'false')))
 MAIL_USERNAME = os.getenv('MAIL_USERNAME')
 MAIL_PASSWORD = os.getenv('MAIL_PASSWORD')
 
-MONITORING_APP_URL = os.getenv('MONITORING_APP_URL')
+CLIENT_APP_URL = os.getenv('CLIENT_APP_URL')
 
 # SQLAlchemy.
 SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URI', '')
@@ -38,9 +38,9 @@ JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
 JWT_BLACKLIST_ENABLED = True
 JWT_BLACKLIST_TOKEN_CHECKS = ['access', 'refresh']
 ACCESS_TOKEN_EXPIRES_IN = int(os.getenv('ACCESS_TOKEN_EXPIRES_IN', 10))  # in minutes
-REFRESH_TOKEN_EXPIRES_IN = int(os.getenv('REFRESH_TOKEN_EXPIRES_IN', 5)) # in days
+REFRESH_TOKEN_EXPIRES_IN = int(os.getenv('REFRESH_TOKEN_EXPIRES_IN', 5))  # in days
 
-#Apispec config
+# Apispec config
 DOC_TITLE = os.getenv('DOC_TITLE')
 DOC_VERSION = os.getenv('DOC_VERSION')
 DOC_OPEN_API_VERSION = os.getenv('DOC_OPEN_API_VERSION', '3.0.2')

@@ -158,4 +158,4 @@ class AuthenticationManager:
     @staticmethod
     def _get_reset_url(token):
         """"""
-        return f"{current_app.config['MONITORING_APP_URL']}/reset_password/{token}"
+        return f"{current_app.config['CLIENT_APP_URL']}/reset_password/{token}"
