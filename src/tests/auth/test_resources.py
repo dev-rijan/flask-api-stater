@@ -16,11 +16,11 @@ def _get_random_user():
             'password': settings.SEED_ADMIN_PASSWORD
         },
         {
-            'email': 'client@endo.com',
+            'email': 'client@flask_api.com',
             'password': 'client@password'
         },
         {
-            'email': 'client2@endo.com',
+            'email': 'client2@flask_api.com',
             'password': 'client2@password'
         }
     ]
@@ -43,13 +43,13 @@ class TestAuthResources(ResourceTestMixin):
 
     def test_login_disable(self):
         """ Login failure due to account being disabled. """
-        response = self.login(identity='disabled@endo.com', password='disabled@password')
+        response = self.login(identity='disabled@flask_api.com', password='disabled@password')
 
         assert response.status_code == 403
 
     def test_login_fail(self):
         """ Login failure due to invalid login credentials. """
-        response = self.login(identity='incorrect@endo.com', password='incorrect@password')
+        response = self.login(identity='incorrect@flask_api.com', password='incorrect@password')
 
         assert response.status_code == 401
 
@@ -70,14 +70,14 @@ class TestAuthResources(ResourceTestMixin):
 
     def test_reset_password_request_fail(self):
         """ Request reset token failure due to using a non-existent account. """
-        user = {'identity': 'invalid_user@endo.com'}
+        user = {'identity': 'invalid_user@flask_api.com'}
         response = self.client.post(url_for('AuthView:reset_password_request'), json=user)
 
         response.status_code = 422
 
     def test_reset_password_request(self):
         """ Reset password request send successfully. """
-        user = {'email': 'client@endo.com'}
+        user = {'email': 'client@flask_api.com'}
         response = self.client.post(url_for('AuthView:reset_password_request'), json=user)
         assert response.status_code == 200
 
@@ -89,7 +89,7 @@ class TestAuthResources(ResourceTestMixin):
     #     assert response.status_code == 200
     #     assert response.get_json()['success'] is True
 
-    #     client = User.find_by_identity('client@endo.com')
+    #     client = User.find_by_identity('client@flask_api.com')
     #     assert client.password != reset['password']
 
     def test_password_reset_invalid_token(self):

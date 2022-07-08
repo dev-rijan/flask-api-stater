@@ -50,86 +50,13 @@ class AuthView(BaseView):
 
     @route('/reset_password_request', methods=['POST'])
     def reset_password_request(self):
-        """Reset password request resources
-        ---
-        description: Request for reset password with registered user email
-        tags:
-          - auth
-        requestBody:
-          content:
-            application/json:
-              schema: ResetPasswordRequestSchema
-        responses:
-          200:
-            content:
-              application/json:
-                schema: SuccessSchema
-        """
-        json_data = request.get_json()
-
-        try:
-            data = reset_password_request_schema.load(json_data)
-
-        except ValidationError as error:
-            return {'errors': error.messages}, 422
-
-        user = authentication_manager.find_by_identity(data['email'])
-
-        if not user:
-            return {'message': "Can\'t find username or email"}, 422
-
-        authentication_manager.initialize_password_reset(user)
-
-        response = {
-            'code': 200,
-            'message': 'Successfully sent password reset mail'
-        }
-
-        return succsss_schema.dump(response)
+        # [TODO: RA] Impliment reset password feature
+        pass
 
     @route('/reset_password/<token>', methods=['POST'])
     def reset_password(self, token):
-        """Reset password request resources
-        ---
-        description: Reset password with token which is sent to registered user`s email
-        tags:
-          - auth
-        requestBody:
-          content:
-            application/json:
-              schema: ResetPasswordSchema
-        parameters:
-        - name: "token"
-          in: "path"
-          description: "Token that is sent in users email"
-          required: true
-          type: "string"
-        responses:
-          200:
-            content:
-              application/json:
-                schema: SuccessSchema
-        """
-        json_data = request.get_json()
-
-        try:
-            data = reset_password_schema.load(json_data)
-        except ValidationError as error:
-            return {'errors': error.messages}, 422
-
-        user = authentication_manager.deserialize_token(token)
-
-        if not user:
-            return {'errors': 'Your reset token has expired or was tampered with.'}, 403
-
-        authentication_manager.reset_password(user, data['password'])
-
-        response = {
-            'code': 200,
-            'message': 'Successfully reset password'
-        }
-
-        return succsss_schema.dump(response)
+        # [TODO: RA] Impliment reset password feature
+        pass
 
     @route('/access/revoke', methods=['DELETE'])
     @jwt_required()

@@ -82,7 +82,7 @@ def users(db):
         },
         {
             'role': User.ROLE_USER,
-            'email': 'client@endo.com',
+            'email': 'client@flask_api.com',
             'password': 'client@password',
             'profile': {
                 'name': 'client name',
@@ -91,7 +91,7 @@ def users(db):
         },
         {
             'role': User.ROLE_USER,
-            'email': 'client2@endo.com',
+            'email': 'client2@flask_api.com',
             'password': 'client2@password',
             'profile': {
                 'name': 'client2 name',
@@ -100,7 +100,7 @@ def users(db):
         },
         {
             'role': User.ROLE_USER,
-            'email': 'disabled@endo.com',
+            'email': 'disabled@flask_api.com',
             'password': 'disabled@password',
             'is_active': False,
             'profile': {
@@ -125,7 +125,7 @@ def password_reset_token(db):
     :param db: Pytest fixture
     :return: JWS token
     """
-    user = User.find_by_identity('client@endo.com')
+    user = User.find_by_identity('client@flask_api.com')
     return authentication_manager.serialize_token(user)
 
 

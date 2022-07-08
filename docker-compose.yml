@@ -25,4 +25,4 @@ services:
 networks:
   default:
     external:
-      name: endo_monitoring
+      name: default

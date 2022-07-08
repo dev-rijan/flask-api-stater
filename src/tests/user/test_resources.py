@@ -18,11 +18,11 @@ def _get_random_user():
             'password': settings.SEED_ADMIN_PASSWORD
         },
         {
-            'email': 'client@endo.com',
+            'email': 'client@flask_api.com',
             'password': 'client@password'
         },
         {
-            'email': 'client2@endo.com',
+            'email': 'client2@flask_api.com',
             'password': 'client2@password'
         }
     ]
@@ -60,7 +60,7 @@ class TestUserResources(ResourceTestMixin):
         """
         Client user cant not access users list, should respond with 403(Forbidden) status
         """
-        headers = self.get_authorization_header(identity='client@endo.com', password='client@password')
+        headers = self.get_authorization_header(identity='client@flask_api.com', password='client@password')
 
         response = self.client.get(url_for('UsersView:index'), headers=headers)
         assert response.status_code == 403
@@ -69,7 +69,7 @@ class TestUserResources(ResourceTestMixin):
         """
         Client user cant not access user, should respond with 403(Forbidden) status
         """
-        headers = self.get_authorization_header(identity='client@endo.com', password='client@password')
+        headers = self.get_authorization_header(identity='client@flask_api.com', password='client@password')
 
         response = self.client.get(url_for('UsersView:get', id=2), headers=headers)
         assert response.status_code == 403
@@ -78,7 +78,7 @@ class TestUserResources(ResourceTestMixin):
         """
         Client user cant not create user, should respond with 403(Forbidden) status
         """
-        headers = self.get_authorization_header(identity='client@endo.com', password='client@password')
+        headers = self.get_authorization_header(identity='client@flask_api.com', password='client@password')
 
         response = self.client.post(url_for('UsersView:post'), headers=headers)
         assert response.status_code == 403
@@ -87,7 +87,7 @@ class TestUserResources(ResourceTestMixin):
         """
         Client user cant not update specific user, should respond with 403(Forbidden) status
         """
-        headers = self.get_authorization_header(identity='client@endo.com', password='client@password')
+        headers = self.get_authorization_header(identity='client@flask_api.com', password='client@password')
 
         response = self.client.put(url_for('UsersView:put', id=1), headers=headers)
         assert response.status_code == 403
@@ -96,7 +96,7 @@ class TestUserResources(ResourceTestMixin):
         """
         Client user cant not disable specific user, should respond with 403(Forbidden) status
         """
-        headers = self.get_authorization_header(identity='client@endo.com', password='client@password')
+        headers = self.get_authorization_header(identity='client@flask_api.com', password='client@password')
 
         response = self.client.post(url_for('UsersView:disable', id=1), headers=headers)
         assert response.status_code == 403
@@ -105,7 +105,7 @@ class TestUserResources(ResourceTestMixin):
         """
         Client user cant not disable specific user, should respond with 403(Forbidden) status
         """
-        headers = self.get_authorization_header(identity='client@endo.com', password='client@password')
+        headers = self.get_authorization_header(identity='client@flask_api.com', password='client@password')
 
         response = self.client.post(url_for('UsersView:enable', id=1), headers=headers)
         assert response.status_code == 403
@@ -155,7 +155,7 @@ class TestUserResources(ResourceTestMixin):
         headers = self.get_authorization_header()
         data = {
             'role': random.choice([*User.ROLES.values()]),
-            'email': 'new_user@endo.com',
+            'email': 'new_user@flask_api.com',
             'username': 'new_user',
             'password': 'new_user@password',
             'profile': {
@@ -188,7 +188,7 @@ class TestUserResources(ResourceTestMixin):
         data = {
             'id': user.id,
             'role': random.choice([*User.ROLES.values()]),
-            'email': 'updated_user@endo.com',
+            'email': 'updated_user@flask_api.com',
             'username': 'updated_user',
             'profile': {
                 'id': user.id,
