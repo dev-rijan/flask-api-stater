@@ -1,4 +1,5 @@
 # Api
+This is flask api stater app.
 
 ## Requirements
 
@@ -26,19 +27,11 @@ Copy the `.env.example` and create `.env` file and setup required configurations
 cp .env.example .env
 ```
 
-## Initialize database
-```bash
-pipenv run flask init-db init
-```
-Run first time only
-
-
 ## Migrations
-`stamp` the migration for the first time because we already create all table using sqlalchemy.
-run only when you initialize application.
+Make sure you have correct DB configuration in `.env` file and excute follwing command to upgrade current migrations.
 
 ```bash
-pipenv run flask db stamp
+pipenv run flask db upgrade
 ```
 
 ## Start app
