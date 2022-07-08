@@ -15,7 +15,7 @@ or Install dependencies using `pipenv`
 ```bash
 pipenv install
 ```
-Note:  While installing dependencies if you encounter` pg_config executable not found` error in ubuntu then run
+Note:  In linux while installing dependencies if you encounter` pg_config executable not found` error then run
 `sudo apt-get install libpq-dev` .
 Details https://tutorials.technology/solved_errors/9-Error-pg_config-executable-not-found.html
 
