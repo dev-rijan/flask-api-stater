@@ -1,5 +1,20 @@
-# Api
-This is flask api stater app.
+# About the project
+This is flask api stater app based on flask-classful.
+Why this stater app?
+- Better routing
+- service-pattrens for code resuablity
+- migration, JWT authentication, Auto api docs generation included.
+- better app structure
+
+why flask-classful?
+Flask method view doesn`t support multiple routing that belongs to same CRUD operations.
+Flask-classful supports complex routing of any usecases so it is best option for middle to big projects.
+
+Flask-classful doesn`t supports auto api docs generation, how you handle this?
+I created package called flask-classful-apispec on the top of marshmallow apispec and flask classful.
+with the help of this plugin you can easily generate open api documentation.
+
+
 
 ## Requirements
 
