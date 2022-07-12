@@ -41,7 +41,7 @@ class ResourceTestMixin(object):
         :return: Flask json response
         """
 
-        user = dict(username=identity, password=password)
+        user = dict(email=identity, password=password)
 
         response = self.client.post(url_for('AuthView:login'), json=user)
 

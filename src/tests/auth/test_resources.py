@@ -39,7 +39,6 @@ class TestAuthResources(ResourceTestMixin):
         assert 'access_token' in response_json
         assert 'refresh_token' in response_json
         assert 'expires_in' in response_json
-        assert 'user' in response_json
 
     def test_login_disable(self):
         """ Login failure due to account being disabled. """
@@ -59,27 +58,27 @@ class TestAuthResources(ResourceTestMixin):
         access_token_header = {'Authorization': 'Bearer {}'.format(login_response.get_json()['access_token'])}
         refresh_token_header = {'Authorization': 'Bearer {}'.format(login_response.get_json()['refresh_token'])}
 
-        response = self.client.post(url_for('AuthView:access_token_revoke'), headers=access_token_header)
+        response = self.client.delete(url_for('AuthView:access_token_revoke'), headers=access_token_header)
         assert response.status_code == 200
 
-        response = self.client.post(url_for('AuthView:refresh_token_revoke'), headers=refresh_token_header)
+        response = self.client.delete(url_for('AuthView:refresh_token_revoke'), headers=refresh_token_header)
         assert response.status_code == 200
 
         response = self.client.get(url_for('UsersView:index'))
         assert response.status_code == 401
 
-    def test_reset_password_request_fail(self):
-        """ Request reset token failure due to using a non-existent account. """
-        user = {'identity': 'invalid_user@flask_api.com'}
-        response = self.client.post(url_for('AuthView:reset_password_request'), json=user)
+    # def test_reset_password_request_fail(self):
+    #     """ Request reset token failure due to using a non-existent account. """
+    #     user = {'identity': 'invalid_user@flask_api.com'}
+    #     response = self.client.post(url_for('AuthView:reset_password_request'), json=user)
 
-        response.status_code = 422
+    #     response.status_code = 422
 
-    def test_reset_password_request(self):
-        """ Reset password request send successfully. """
-        user = {'email': 'client@flask_api.com'}
-        response = self.client.post(url_for('AuthView:reset_password_request'), json=user)
-        assert response.status_code == 200
+    # def test_reset_password_request(self):
+    #     """ Reset password request send successfully. """
+    #     user = {'email': 'client@flask_api.com'}
+    #     response = self.client.post(url_for('AuthView:reset_password_request'), json=user)
+    #     assert response.status_code == 200
 
     # def test_password_reset(self, password_reset_token):
     #     """ Reset successful. """
@@ -92,9 +91,9 @@ class TestAuthResources(ResourceTestMixin):
     #     client = User.find_by_identity('client@flask_api.com')
     #     assert client.password != reset['password']
 
-    def test_password_reset_invalid_token(self):
-        """ Reset failure due to tampered reset token. """
-        reset = {'password': 'newpassword'}
-        response = self.client.post(url_for('AuthView:reset_password', token='tempered-token'), json=reset)
+    # def test_password_reset_invalid_token(self):
+    #     """ Reset failure due to tampered reset token. """
+    #     reset = {'password': 'newpassword'}
+    #     response = self.client.post(url_for('AuthView:reset_password', token='tempered-token'), json=reset)
 
-        assert response.status_code == 403
+    #     assert response.status_code == 403

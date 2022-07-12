@@ -155,7 +155,7 @@ class TestUserResources(ResourceTestMixin):
         headers = self.get_authorization_header()
         data = {
             'role': random.choice([*User.ROLES.values()]),
-            'email': 'new_user@flask_api.com',
+            'email': 'new_user@flask-api.dev',
             'username': 'new_user',
             'password': 'new_user@password',
             'profile': {
@@ -165,7 +165,7 @@ class TestUserResources(ResourceTestMixin):
         }
 
         response = self.client.post(url_for('UsersView:post'), json=data, headers=headers)
-
+        print(response.get_json())
         actual_result = response.get_json()['user']
         # remove id from actual result to compare with expected result
         actual_result.pop('id')
@@ -188,7 +188,7 @@ class TestUserResources(ResourceTestMixin):
         data = {
             'id': user.id,
             'role': random.choice([*User.ROLES.values()]),
-            'email': 'updated_user@flask_api.com',
+            'email': 'updated_user@flask-api.dev',
             'username': 'updated_user',
             'profile': {
                 'id': user.id,
