@@ -7,8 +7,14 @@ from src.models.user import User
 from cli import register_cli_commands
 from src.exceptions.api_exception_handler import ApiExceptionHandler
 from src import routes
-
-from src.extensions import debug_toolbar, flask_static_digest, db, migrate, ma, jwt, mail, apispec
+from src.extensions import (debug_toolbar,
+                            flask_static_digest,
+                            db,
+                            migrate,
+                            ma,
+                            jwt,
+                            mail,
+                            apispec)
 
 
 def create_app(settings_override=None):
@@ -26,11 +32,14 @@ def create_app(settings_override=None):
         app.config.update(settings_override)
 
     # initialize cors
-    CORS(app, supports_credentials=True, allow_headers="*", resources={
-        r"/*": {
-            "origins": "*"
-        }})
-
+    CORS(app,
+         supports_credentials=True,
+         allow_headers="*",
+         resources={
+             r"/*": {
+                 "origins": "*"
+             }
+         })
     app.config['CORS_HEADERS'] = 'Content-Type'
 
     extensions(app)
@@ -41,7 +50,6 @@ def create_app(settings_override=None):
         app.wsgi_app = DebuggedApplication(app.wsgi_app, evalex=True)
 
     register_cli_commands(app)
-
     jwt_callbacks(app, User)
 
     return app
