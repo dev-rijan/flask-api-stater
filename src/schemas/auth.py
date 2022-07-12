@@ -5,7 +5,7 @@ from src.schemas.user import UserSchema
 
 
 class LoginSchema(ma.Schema):
-    username = fields.String(required=True)
+    email = fields.String(required=True)
     password = fields.String(required=True)
 
 

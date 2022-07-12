@@ -111,11 +111,11 @@ def users():
 
         # Ensure the seeded admin is always an admin with the seeded password.
         if email == current_app.config['SEED_ADMIN_EMAIL']:
-            password = User.encrypt_password(
-                current_app.config['SEED_ADMIN_PASSWORD'])
-
-            params['role'] = 'ROLE_ADMIN'
-            params['password'] = password
+            params['password'] = User.encrypt_password(
+                current_app.config['SEED_ADMIN_PASSWORD']
+            )
+            params['username'] = current_app.config['SEED_ADMIN_USERNAME']
+            params['role'] = User.ROLE_ADMIN
 
         data.append(params)
 

@@ -47,7 +47,7 @@ class AuthenticationManager:
             (User.email == identity) | (User.username == identity)).first()
 
     def login(self, data):
-        user = User.find_by_identity(data['username'])
+        user = User.find_by_identity(data['email'])
 
         if not user or not user.authenticated(password=data['password']):
             raise Unauthorized()
