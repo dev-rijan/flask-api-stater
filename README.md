@@ -1,16 +1,16 @@
 # About the project
-This is flask api stater app based on flask-classful.
-Why this stater app?
+This is flask api stater app based on flask-classful.  
+Why this stater app?  
 - Better routing
 - service-pattrens for code resuablity
 - migration, JWT authentication, Auto api docs generation included.
 - better app structure
 
-why flask-classful?
+why flask-classful?  
 Flask method view doesn`t support multiple routing that belongs to same CRUD operations.
 Flask-classful supports complex routing of any usecases so it is best option for middle to big projects.
 
-Flask-classful doesn`t supports auto api docs generation, how you handle this?  
+Flask-classful doesn`t supports auto api docs generation, how do you handle this?  
 I created package called flask-classful-apispec on the top of marshmallow apispec and flask classful.
 with the help of this plugin you can easily generate open api documentation.
 
@@ -18,7 +18,7 @@ with the help of this plugin you can easily generate open api documentation.
 
 ## Requirements
 
-* python >= 3
+* python >= 3.6
 * pipenv
 
 ## Install dependencies
@@ -41,6 +41,26 @@ Copy the `.env.example` and create `.env` file and setup required configurations
 ```bash
 cp .env.example .env
 ```
+Config are written in `.env` file. You need to update config value in `.env` file.
+| config | description  | Available options | Default |
+| :-  | :- | :- | :- |
+| FLASK_ENV | App enviroment, whether development or production. DEBUG mode is enabled in development mode | `production`, `development` | `development` | 
+| SECRET_KEY | Application secrect key | | |
+| WEB_RELOAD | Hot reloading app server | `true`, `false`| `false`|
+| WEB_BIND |Address and port gunicorn bind to | | `0.0.0.0:8000` |
+| WEB_CONCURRENCY | No of workers | | `1` |
+| PYTHON_MAX_THREADS | No of threads | | `1` |
+| FLASK_APP | Application factory path | | `src.app` | 
+| FLASK_APP_VERSION | Application version | | `0.0.1` | 
+| SERVER_NAME | app server name. |`{ip}:{port same as web bind}`, `{localhost}:{port same as web bind}` | `localhost:8000`| 
+| DATABASE_URI | Database config `dialect+driver://username:password@host:port/database` | |  | 
+| JWT_SECRET_KEY | JWT secrect key to generate tokens | |  | 
+| ACCESS_TOKEN_EXPIRES_IN | Access token expire time (In minute) | | `10` |
+| REFRESH_TOKEN_EXPIRES_IN | Refresh token expire time (In days) | | `5` |
+
+
+
+
 
 ## Migrations
 Make sure you have correct DB configuration in `.env` file and excute follwing command to upgrade current migrations.
@@ -61,10 +81,9 @@ pipenv run gunicorn -c "python:config.gunicorn" "src.app:create_app()"
 ```
 Now your app is available at http://localhost:8000
 
-## Login
+## Protected resources
 
- Now admin user is created. You can’t signup an account for admin from UI.
-credentials for admin user is same as defined in `env vars(SEED_ADMIN_USER, SEED_ADMIN_PASSWORD)`
+ Now admin user is created. You can use protected routes using admin user.
 
 ## Tests
 Please create database with `database name in env file + _test` suffix. eg, If name of actual database is `db`
