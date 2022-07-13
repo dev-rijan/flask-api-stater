@@ -140,24 +140,6 @@ class User(ResourceMixin, db.Model):
 
         return False
 
-    def get_auth_token(self):
-        """
-        Return the user's auth token. Use their password as part of the token
-        because if the user changes their password we will want to invalidate
-        all of their logins across devices. It is completely fine to use
-        md5 here as nothing leaks.
-
-        This satisfies Flask-Login by providing a means to create a token.
-
-        :return: str
-        """
-        private_key = current_app.config['SECRET_KEY']
-
-        serializer = URLSafeTimedSerializer(private_key)
-        data = [str(self.id), md5(self.password.encode('utf-8')).hexdigest()]
-
-        return serializer.dumps(data)
-
     def authenticated(self, with_password=True, password=''):
         """
         Ensure a user is authenticated, and optionally check their password.
@@ -194,20 +176,12 @@ class User(ResourceMixin, db.Model):
 
         :return: bool
         """
-        return True if self.role == self.ROLE_ADMIN else False
+        return self.role == self.ROLE_ADMIN
 
-    def is_client(self):
+    def is_user(self):
         """
         Return whether or not the user is client
 
         :return: bool
         """
-        return True if self.role == self.ROLE_CLIENT else False
-
-    def is_iot(self):
-        """
-        Return whether or not the user is iot
-
-        :return: bool
-        """
-        return True if self.role == self.ROLE_IOT else False
+        return self.role == self.ROLE_USER
