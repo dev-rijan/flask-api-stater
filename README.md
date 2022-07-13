@@ -1,5 +1,5 @@
 # About the project
-This is flask api stater app based on flask-classful.  
+This is flask api stater app based on [Flask classful](https://flask-classful.teracy.org)
 Why this stater app?  
 - Better routing
 - service-pattrens for code resuablity
@@ -10,8 +10,8 @@ why flask-classful?
 Flask method view doesn`t support multiple routing that belongs to same CRUD operations.
 Flask-classful supports complex routing of any usecases so it is best option for middle to big projects.
 
-Flask-classful doesn`t supports auto api docs generation, how do you handle this?  
-I created package called flask-classful-apispec on the top of marshmallow apispec and flask classful.
+Flask-classful doesn't supports auto api docs generation, how do you handle this?  
+I created package called  [Flask-classful-apispec](https://github.com/dev-rijan/flask-classful-apispec) on the top of marshmallow apispec and flask classful.
 with the help of this plugin you can easily generate open api documentation.
 
 
@@ -114,6 +114,10 @@ pipenv run flask cov
 
 ## Using docker
 Assume you installed docker and docker-compose in your machine.
+Create docker network
+```
+docker network create flask_api
+```
 
 Make up mysql container from test db dir.
  ```
