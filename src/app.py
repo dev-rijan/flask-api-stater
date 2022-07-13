@@ -7,9 +7,7 @@ from src.models.user import User
 from cli import register_cli_commands
 from src.exceptions.api_exception_handler import ApiExceptionHandler
 from src import routes
-from src.extensions import (debug_toolbar,
-                            flask_static_digest,
-                            db,
+from src.extensions import (db,
                             migrate,
                             ma,
                             jwt,
@@ -62,9 +60,7 @@ def extensions(app):
     :param app: Flask application instance
     :return: None
     """
-    debug_toolbar.init_app(app)
     db.init_app(app)
-    flask_static_digest.init_app(app)
     ma.init_app(app)
     jwt.init_app(app)
     migrate.init_app(app=app, db=db)

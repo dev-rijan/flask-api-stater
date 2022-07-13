@@ -25,4 +25,4 @@ services:
 networks:
   default:
     external:
-      name: default
+      name: flask_api
