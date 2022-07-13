@@ -15,7 +15,7 @@ from src.services.user import UserService
 fake = Faker()
 
 
-@pytest.yield_fixture(scope='session')
+@pytest.fixture(scope='session')
 def app():
     """
     Setup our flask test app, this only gets executed once.
@@ -41,7 +41,7 @@ def app():
     ctx.pop()
 
 
-@pytest.yield_fixture(scope='function')
+@pytest.fixture(scope='function')
 def client(app):
     """
     Setup an app client, this gets executed for each test function.
@@ -129,7 +129,7 @@ def password_reset_token(db):
     return authentication_manager.serialize_token(user)
 
 
-@pytest.yield_fixture(scope='function')
+@pytest.fixture(scope='function')
 def session(app, db):
     """
     Allow very fast tests by using rollbacks and nested sessions. This does
@@ -174,7 +174,7 @@ def session(app, db):
         conn.close()
 
 
-@pytest.yield_fixture(scope='function')
+@pytest.fixture(scope='function')
 def random_date():
     return _get_random_date()
 
