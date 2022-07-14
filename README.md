@@ -142,10 +142,10 @@ make docker-start
 ```
 
 ### Folder structure  
- TODO
+ Document TODO
  
-### Route registration
-  TODO
-
+### Api documentation using swagger
+ Document TODO
+ 
 ### How to use service pattrens? and Why?
-TODO
+Document TODO
