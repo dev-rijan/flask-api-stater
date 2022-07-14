@@ -1,4 +1,4 @@
-# About the project
+# About the project (Which is in development phase may have bugs)
 This is flask api stater app based on [Flask classful](https://flask-classful.teracy.org)
 Why this stater app?  
 - Better routing
@@ -81,9 +81,22 @@ pipenv run gunicorn -c "python:config.gunicorn" "src.app:create_app()"
 ```
 Now your app is available at http://localhost:8000
 
+### Seed users
+seed admin user and random user using faker. Admin user credentials is same as defined in `.env` file
+```
+pipenv run flask seed users
+```
+## Authentication  
+To access protected resources, you will need an access token.
+You can generate an access and a refresh token using /auth/login endpoint. You can use admin user to get access and refresh token which are defined in `.env` files
+
 ## Protected resources
 
  Now admin user is created. You can use protected routes using admin user.
+ You can list available routes using following commad
+ ```
+ pipenv run flask routes
+ ```
 
 ## Tests
 Please create database with `database name in env file + _test` suffix. eg, If name of actual database is `db`
@@ -127,3 +140,12 @@ make build && make start
  ```
 make docker-start
 ```
+
+### Folder structure  
+ Document TODO
+ 
+### Api documentation using swagger
+ Document TODO
+ 
+### How to use service pattrens? and Why?
+Document TODO
