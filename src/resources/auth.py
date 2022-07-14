@@ -1,6 +1,7 @@
 from flask import request
 from flask_classful import route
 from marshmallow import ValidationError
+from webargs.flaskparser import use_args
 
 from src.resources.base import BaseView
 from src.schemas.auth import LoginSchema, RefreshTokenSchema, ResetPasswordRequestSchema, ResetPasswordSchema
@@ -20,7 +21,8 @@ succsss_schema = SuccessSchema()
 
 class AuthView(BaseView):
     @route('/login', methods=['POST'])
-    def login(self):
+    @use_args(LoginSchema(), location='json')
+    def login(self, data):
         """Login Resource
         ---
         description: Login with username/email and password
@@ -38,14 +40,6 @@ class AuthView(BaseView):
               application/json:
                 schema: LoginResponseSchema
         """
-
-        json_data = request.get_json()
-
-        try:
-            data = login_schema.load(json_data)
-        except ValidationError as error:
-            return {'errors': error.messages}, 422
-
         return authentication_manager.login(data)
 
     @route('/reset_password_request', methods=['POST'])

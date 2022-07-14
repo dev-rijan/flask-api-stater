@@ -31,6 +31,7 @@ apispec = "*"
 pytest = "*"
 flake8 = "*"
 pytest-cov = "*"
+webargs = "*"
 
 [requires]
 python_version = "3"
