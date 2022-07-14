@@ -140,3 +140,12 @@ make build && make start
  ```
 make docker-start
 ```
+
+### Folder structure  
+ TODO
+ 
+### Route registration
+  TODO
+
+### How to use service pattrens? and Why?
+TODO
