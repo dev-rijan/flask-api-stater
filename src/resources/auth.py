@@ -1,27 +1,19 @@
-from flask import request
 from flask_classful import route
-from marshmallow import ValidationError
-from webargs.flaskparser import use_args
-
-from src.resources.base import BaseView
-from src.schemas.auth import LoginSchema, RefreshTokenSchema, ResetPasswordRequestSchema, ResetPasswordSchema
 from flask_jwt_extended import (jwt_required,
                                 get_jwt_identity,
                                 get_jwt)
-from src.schemas.default import SuccessSchema
 
+from src.resources.base import BaseView
+from src.schemas.auth import LoginSchema, RefreshTokenSchema
 from src.services.authentication_manager import AuthenticationManager
+from src.decorators.request_parser import use_args_with
 
-login_schema = LoginSchema()
-reset_password_schema = ResetPasswordSchema()
-reset_password_request_schema = ResetPasswordRequestSchema()
 authentication_manager = AuthenticationManager()
-succsss_schema = SuccessSchema()
 
 
 class AuthView(BaseView):
     @route('/login', methods=['POST'])
-    @use_args(LoginSchema(), location='json')
+    @use_args_with(LoginSchema)
     def login(self, data):
         """Login Resource
         ---

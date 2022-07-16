@@ -14,7 +14,6 @@ Flask = "*"
 Werkzeug = "*"
 Flask-SQLAlchemy = "*"
 SQLAlchemy-Utils = "*"
-Flask-DebugToolbar = "*"
 Flask-Mail = "*"
 Faker = "*"
 pytz = "*"
@@ -34,4 +33,4 @@ pytest-cov = "*"
 webargs = "*"
 
 [requires]
-python_version = "3"
+python_version = "3.9"
