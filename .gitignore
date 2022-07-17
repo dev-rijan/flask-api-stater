@@ -1,13 +1,10 @@
 __pycache__/
 .idea
-
 venv/*
 node_modules/
 dist/
-
 assets/node_modules/
 public/*
-
 .coverage
-/assets/yarn-error.log
 .env
+.vscode/
