@@ -1,7 +1,6 @@
-from email import message
 from marshmallow import ValidationError
 from werkzeug.exceptions import HTTPException, UnprocessableEntity
-from flask import make_response, jsonify
+from flask import jsonify
 
 
 class ApiExceptionHandler:
@@ -20,4 +19,4 @@ class ApiExceptionHandler:
 
     def _handle_unprocessable_exception(self, exception: ValidationError):
         messages = exception.data.get('messages', ['Invalid request.'])
-        return jsonify(error=exception.description, code=exception.code, messages=messages), exception.code
+        return jsonify(error=exception.description, code=exception.code, fields=messages.get('json', messages)), exception.code
