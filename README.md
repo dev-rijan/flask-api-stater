@@ -1,4 +1,4 @@
-# About the project (Which is in development phase may have bugs)
+# About the project (Development phase)
 This is flask api stater app based on [Flask classful](https://flask-classful.teracy.org)
 Why this stater app?  
 - Better routing
