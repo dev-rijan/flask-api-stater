@@ -1,7 +1,7 @@
 from flask import request
 from flask_classful import route
 from flask_jwt_extended import current_user
-from marshmallow import ValidationError
+from webargs.flaskparser import parser
 
 from src.decorators.acl_decorators import admin_required, auth_required
 from src.resources.base import BaseView
@@ -9,7 +9,6 @@ from src.schemas.user import (
     CreateUserSchema,
     UserSchema,
     UpdateUserSchema,
-    UpdateIdentitySchema,
     UpdatePasswordSchema,
     ProfileSchema
 )
@@ -21,7 +20,6 @@ profile_schema = ProfileSchema()
 update_user_schema = UpdateUserSchema()
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
-update_identity_schema = UpdateIdentitySchema()
 update_password_schema = UpdatePasswordSchema()
 succsss_schema = SuccessSchema()
 
@@ -90,12 +88,8 @@ class UsersView(BaseView):
               application/json:
                 schema: UserSchema
         """
-        json_data = request.get_json()
-        try:
-            data = create_user_schema.load(json_data)
-        except ValidationError as error:
-            return {'errors': error.messages}, 422
 
+        data = parser.parse(CreateUserSchema, request)
         user = UserService.create(data)
 
         return {
@@ -125,12 +119,7 @@ class UsersView(BaseView):
               application/json:
                 schema: UserSchema
         """
-        json_data = request.get_json()
-        try:
-            data = update_user_schema.load(json_data)
-        except ValidationError as error:
-            return {'errors': error.messages}, 422
-
+        data = parser.parse(UpdateUserSchema, request)
         user = UserService.update(id, data)
 
         return {
@@ -208,15 +197,7 @@ class UsersView(BaseView):
               application/json:
                 schema: SuccessSchema
         """
-        json_data = request.get_json()
-        try:
-            data = update_password_schema.load(json_data)
-        except ValidationError as error:
-            return {'errors': error.messages}, 422
-
-        if not current_user.authenticated(password=data['current_password']):
-            return {'errors': 'Current password not matched'}, 422
-
+        data = parser.parse(UpdatePasswordSchema, request)
         UserService.update_password(data['new_password'], current_user)
 
         response = {

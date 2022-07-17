@@ -165,7 +165,6 @@ class TestUserResources(ResourceTestMixin):
         }
 
         response = self.client.post(url_for('UsersView:post'), json=data, headers=headers)
-        print(response.get_json())
         actual_result = response.get_json()['user']
         # remove id from actual result to compare with expected result
         actual_result.pop('id')
