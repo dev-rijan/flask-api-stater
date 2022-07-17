@@ -97,6 +97,10 @@ class UsersView(BaseView):
                   type: object
                   properties:
                     user: UserSchema
+          422:
+            content:
+              application/json:
+                schema: UnprocessableEntitySchema
         """
 
         data = parser.parse(CreateUserSchema, request)
@@ -133,6 +137,10 @@ class UsersView(BaseView):
                   type: object
                   properties:
                     user: UserSchema
+          422:
+            content:
+              application/json:
+                schema: UnprocessableEntitySchema
         """
         data = parser.parse(UpdateUserSchema, request)
         user = UserService.update(id, data)
@@ -231,6 +239,10 @@ class UsersView(BaseView):
                     message:
                       type: String
                       example: String
+          422:
+            content:
+              application/json:
+                schema: UnprocessableEntitySchema
         """
         data = parser.parse(UpdatePasswordSchema, request)
         UserService.update_password(data['new_password'], current_user)

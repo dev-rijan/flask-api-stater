@@ -15,8 +15,12 @@ class ApiExceptionHandler:
             UnprocessableEntity, self._handle_unprocessable_exception)
 
     def _handle_http_exception(self, exception: HTTPException):
-        return jsonify(error=exception.description, code=exception.code), exception.code
+        return jsonify(description=exception.description, status_code=exception.code), exception.code
 
     def _handle_unprocessable_exception(self, exception: ValidationError):
         messages = exception.data.get('messages', ['Invalid request.'])
-        return jsonify(error=exception.description, code=exception.code, fields=messages.get('json', messages)), exception.code
+        return jsonify(
+            description=exception.description,
+            status_code=exception.code,
+            fields=messages.get('json', messages)
+        ), exception.code
