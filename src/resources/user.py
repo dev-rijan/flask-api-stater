@@ -11,12 +11,10 @@ from src.schemas.user import (
     UpdateUserSchema,
     UpdatePasswordSchema,
 )
-from src.schemas.default import SuccessSchema
 from src.services.user import UserService
 
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
-succsss_schema = SuccessSchema()
 
 
 class UsersView(BaseView):
@@ -33,7 +31,12 @@ class UsersView(BaseView):
           200:
             content:
               application/json:
-                schema: UserSchema
+                schema:
+                  type: object
+                  properties:
+                    users:
+                        type: array
+                        items: UserSchema
         """
         users = UserService.get_all()
 
@@ -60,7 +63,10 @@ class UsersView(BaseView):
           200:
             content:
               application/json:
-                schema: UserSchema
+                schema:
+                  type: object
+                  properties:
+                    user: UserSchema
         """
         user = UserService.get_by_id(id)
         if not user:
@@ -87,7 +93,14 @@ class UsersView(BaseView):
           200:
             content:
               application/json:
-                schema: UserSchema
+                schema:
+                  type: object
+                  properties:
+                    user: UserSchema
+          422:
+            content:
+              application/json:
+                schema: UnprocessableEntitySchema
         """
 
         data = parser.parse(CreateUserSchema, request)
@@ -120,7 +133,14 @@ class UsersView(BaseView):
           200:
             content:
               application/json:
-                schema: UserSchema
+                schema:
+                  type: object
+                  properties:
+                    user: UserSchema
+          422:
+            content:
+              application/json:
+                schema: UnprocessableEntitySchema
         """
         data = parser.parse(UpdateUserSchema, request)
         user = UserService.update(id, data)
@@ -149,7 +169,10 @@ class UsersView(BaseView):
           200:
             content:
               application/json:
-                schema: UserSchema
+                schema:
+                  type: object
+                  properties:
+                    user: UserSchema
         """
 
         user = UserService.enable(id)
@@ -178,7 +201,10 @@ class UsersView(BaseView):
           200:
             content:
               application/json:
-                schema: UserSchema
+                schema:
+                  type: object
+                  properties:
+                    user: UserSchema
         """
         user = UserService.disable(id)
 
@@ -204,13 +230,24 @@ class UsersView(BaseView):
           200:
             content:
               application/json:
-                schema: SuccessSchema
+                schema:
+                  type: object
+                  properties:
+                    success:
+                      type: Boolean
+                      example: True
+                    message:
+                      type: String
+                      example: String
+          422:
+            content:
+              application/json:
+                schema: UnprocessableEntitySchema
         """
         data = parser.parse(UpdatePasswordSchema, request)
         UserService.update_password(data['new_password'], current_user)
 
-        response = {
+        return {
             'success': True,
             'message': 'Successfully updated password'
         }
-        return succsss_schema.dump(response)

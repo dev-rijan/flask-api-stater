@@ -38,7 +38,6 @@ class TestAuthResources(ResourceTestMixin):
         assert response.status_code == 200
         assert 'access_token' in response_json
         assert 'refresh_token' in response_json
-        assert 'expires_in' in response_json
 
     def test_login_disable(self):
         """ Login failure due to account being disabled. """

@@ -4,7 +4,8 @@ from flask_jwt_extended import (jwt_required,
                                 get_jwt)
 
 from src.resources.base import BaseView
-from src.schemas.auth import LoginSchema, RefreshTokenSchema
+from src.schemas.auth import LoginResponseSchema, LoginSchema, RefreshTokenSchema
+from src.schemas.errors import UnprocessableEntitySchema
 from src.services.authentication_manager import AuthenticationManager
 from src.decorators.request_parser import use_args_with
 
@@ -31,8 +32,14 @@ class AuthView(BaseView):
             content:
               application/json:
                 schema: LoginResponseSchema
+          422:
+            content:
+              application/json:
+                schema: UnprocessableEntitySchema
         """
-        return authentication_manager.login(data)
+        response = authentication_manager.login(data)
+
+        return LoginResponseSchema().dump(response)
 
     @route('/access/revoke', methods=['DELETE'])
     @jwt_required()

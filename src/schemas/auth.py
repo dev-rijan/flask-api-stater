@@ -1,7 +1,6 @@
 from marshmallow import fields
 
 from src.extensions import ma
-from src.schemas.user import UserSchema
 
 
 class LoginSchema(ma.Schema):
