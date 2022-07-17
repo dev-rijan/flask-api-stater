@@ -1,8 +1,14 @@
+from flask_jwt_extended import current_user
 from marshmallow import fields, validates_schema, ValidationError
 
 from src.extensions import ma
 from src.models.profile import Profile
 from src.services.user import UserService
+
+ERROR_MESSAGES = {
+    'unique': '{0} Must be unique.',
+    'invalid_password': 'Password not matched'
+}
 
 
 class ProfileSchema(ma.SQLAlchemyAutoSchema):
@@ -26,12 +32,16 @@ class CreateUserSchema(UserSchema):
     @validates_schema
     def validate_email(self, data, **kwargs):
         if UserService.find_by_identity(data['email']):
-            raise ValidationError('Email must be unique.')
+            raise ValidationError({
+                'email': ERROR_MESSAGES['unique'].format('Email')
+            })
 
     @validates_schema
     def validate_username(self, data, **kwargs):
         if UserService.find_by_identity(data['username']):
-            raise ValidationError('Username must be unique.')
+            raise ValidationError({
+                'username': ERROR_MESSAGES['unique'].format('Username')
+            })
 
 
 class UpdateUserSchema(UserSchema):
@@ -42,36 +52,27 @@ class UpdateUserSchema(UserSchema):
         user = UserService.find_by_identity(data['email'])
 
         if user and user.id != data['id']:
-            raise ValidationError('Email must be unique.')
+            raise ValidationError({
+                'email': ERROR_MESSAGES['unique'].format('Email')
+            })
 
     @validates_schema
     def validate_username(self, data, **kwargs):
         user = UserService.find_by_identity(data['username'])
 
         if user and user.id != data['id']:
-            raise ValidationError('Username must be unique.')
-
-
-class UpdateIdentitySchema(ma.Schema):
-    id = fields.Integer()
-    email = fields.String(required=True)
-    username = fields.String(required=True)
-
-    @validates_schema
-    def validate_email(self, data, **kwargs):
-        user = UserService.find_by_identity(data['email'])
-
-        if user and user.id != data['id']:
-            raise ValidationError('Email must be unique.')
-
-    @validates_schema
-    def validate_username(self, data, **kwargs):
-        user = UserService.find_by_identity(data['username'])
-
-        if user and user.id != data['id']:
-            raise ValidationError('Username must be unique.')
+            raise ValidationError({
+                'username': ERROR_MESSAGES['unique'].format('Username')
+            })
 
 
 class UpdatePasswordSchema(ma.Schema):
     current_password = fields.String(required=True)
     new_password = fields.String(required=True)
+
+    @validates_schema
+    def validate_current_password(self, data, **kwargs):
+        if not current_user.authenticated(password=data['current_password']):
+            raise ValidationError({
+                'current_password': ERROR_MESSAGES['invalid_password']
+            })
