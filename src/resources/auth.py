@@ -34,16 +34,6 @@ class AuthView(BaseView):
         """
         return authentication_manager.login(data)
 
-    @route('/reset_password_request', methods=['POST'])
-    def reset_password_request(self):
-        # [TODO: RA] Impliment reset password feature
-        pass
-
-    @route('/reset_password/<token>', methods=['POST'])
-    def reset_password(self, token):
-        # [TODO: RA] Impliment reset password feature
-        pass
-
     @route('/access/revoke', methods=['DELETE'])
     @jwt_required()
     def access_token_revoke(self):
@@ -139,3 +129,12 @@ class AuthView(BaseView):
         tokens = authentication_manager.refresh_token(identity=current_user)
 
         return RefreshTokenSchema().dump(tokens)
+  # @route('/reset_password_request', methods=['POST'])
+    # def reset_password_request(self):
+    #     # [TODO: RA] Impliment reset password feature
+    #     pass
+
+    # @route('/reset_password/<token>', methods=['POST'])
+    # def reset_password(self, token):
+    #     # [TODO: RA] Impliment reset password feature
+    #     pass
