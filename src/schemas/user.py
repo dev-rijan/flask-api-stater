@@ -2,7 +2,6 @@ from flask_jwt_extended import current_user
 from marshmallow import fields, validates_schema, ValidationError
 
 from src.extensions import ma
-from src.models.profile import Profile
 from src.services.user import UserService
 
 ERROR_MESSAGES = {
@@ -12,9 +11,8 @@ ERROR_MESSAGES = {
 
 
 class ProfileSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model = Profile
-        fields = ('id', 'name', 'name_kana')
+    name = fields.String(required=True)
+    name_kana = fields.String(required=True)
 
 
 class UserSchema(ma.Schema):
@@ -28,6 +26,7 @@ class UserSchema(ma.Schema):
 
 class CreateUserSchema(UserSchema):
     password = fields.String(required=True)
+    id = fields.Integer(dump_only=True)
 
     @validates_schema
     def validate_email(self, data, **kwargs):

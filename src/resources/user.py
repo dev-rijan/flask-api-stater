@@ -10,17 +10,12 @@ from src.schemas.user import (
     UserSchema,
     UpdateUserSchema,
     UpdatePasswordSchema,
-    ProfileSchema
 )
 from src.schemas.default import SuccessSchema
 from src.services.user import UserService
 
-create_user_schema = CreateUserSchema()
-profile_schema = ProfileSchema()
-update_user_schema = UpdateUserSchema()
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
-update_password_schema = UpdatePasswordSchema()
 succsss_schema = SuccessSchema()
 
 
@@ -29,6 +24,8 @@ class UsersView(BaseView):
     def index(self):
         """Get all users Resource
         ---
+        tags:
+          - users
         description: Get all Users
         security:
           - jwt: []
@@ -48,6 +45,8 @@ class UsersView(BaseView):
     def get(self, id):
         """Get single user Resource
         ---
+        tags:
+          - users
         description: Get User
         security:
           - jwt: []
@@ -75,6 +74,8 @@ class UsersView(BaseView):
     def post(self):
         """Create User Resource
         ---
+        tags:
+          - users
         description: Create User
         security:
           - jwt: []
@@ -100,6 +101,8 @@ class UsersView(BaseView):
     def put(self, id):
         """Update User Resource
         ---
+        tags:
+          - users
         description: Update User
         security:
           - jwt: []
@@ -131,6 +134,8 @@ class UsersView(BaseView):
     def enable(self, id):
         """Enable User Resource
         ---
+        tags:
+          - users
         description: Enable User
         security:
           - jwt: []
@@ -158,6 +163,8 @@ class UsersView(BaseView):
     def disable(self, id):
         """Disable User Resource
         ---
+        tags:
+          - users
         description: Disable User
         security:
           - jwt: []
@@ -184,6 +191,8 @@ class UsersView(BaseView):
     def update_password(self):
         """Update Password Resource
         ---
+        tags:
+          - users
         description: Update Password
         security:
           - jwt: []

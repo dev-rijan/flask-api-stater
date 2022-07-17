@@ -12,7 +12,7 @@ class LoginSchema(ma.Schema):
 class LoginResponseSchema(ma.Schema):
     access_token = fields.String()
     refresh_token = fields.String()
-    user = ma.Nested(UserSchema)
+    expired_at = fields.Integer()
 
 
 class RefreshTokenSchema(ma.Schema):

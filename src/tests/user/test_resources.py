@@ -168,7 +168,6 @@ class TestUserResources(ResourceTestMixin):
         actual_result = response.get_json()['user']
         # remove id from actual result to compare with expected result
         actual_result.pop('id')
-        actual_result.get('profile').pop('id')
 
         # remove password from data to compare with actual result
         data.pop('password')
@@ -190,7 +189,6 @@ class TestUserResources(ResourceTestMixin):
             'email': 'updated_user@flask-api.dev',
             'username': 'updated_user',
             'profile': {
-                'id': user.id,
                 'name': 'updated user name',
                 'name_kana': 'updated user kana'
             }
