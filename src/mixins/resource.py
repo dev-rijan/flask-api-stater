@@ -30,19 +30,6 @@ class ResourceMixin(object):
 
         return field, direction
 
-        """
-        Delete 1 or more model instances.
-
-        :param ids: List of ids to be deleted
-        :type ids: list
-        :return: Number of deleted instances
-        """
-        delete_count = cls.query.filter(cls.id.in_(ids)).delete(
-            synchronize_session=False)
-        db.session.commit()
-
-        return delete_count
-
     def save(self):
         """
         Save a model instance.
