@@ -1,7 +1,7 @@
 version: "3.4"
 
 services:
-  web:
+  flask_api:
     build:
       context: "."
       args:
