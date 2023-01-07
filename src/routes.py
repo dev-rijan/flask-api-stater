@@ -6,14 +6,15 @@ from src.extensions import apispec
 
 
 def register(app):
+    # Register routes
     UsersView.register(app, trailing_slash=False)
     AuthView.register(app, trailing_slash=False)
     DocsView.register(app, trailing_slash=False)
     DefaultView.register(app, trailing_slash=False)
 
-    with app.test_request_context():
-        apispec.paths(AuthView, app)
-        apispec.paths(UsersView, app)
+    # Register docs
+    apispec.paths(AuthView)
+    apispec.paths(UsersView)
 
     jwt_scheme = {"type": "http", "scheme": "bearer", "bearerFormat": "JWT"}
     apispec.components.security_scheme("jwt", jwt_scheme)
